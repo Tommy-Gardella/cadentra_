@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -379,6 +379,18 @@
       justify-content: center;
     }
 
+    .strava-mock-feed { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .strava-mock-run { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius); transition: border-color 0.2s; }
+    .strava-mock-run:hover { border-color: rgba(252,76,2,0.3); }
+    .strava-run-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .strava-run-info { flex: 1; min-width: 0; }
+    .strava-run-info strong { display: block; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .strava-run-info span { font-size: 0.75rem; color: var(--muted); }
+    .strava-run-badge { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4CAF50; background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.2); border-radius: 4px; padding: 3px 8px; flex-shrink: 0; }
+    .strava-mock-footer { padding: 10px 4px 4px; text-align: center; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 4px; }
+    .strava-stat-card div strong { display: block; font-size: 0.88rem; margin-bottom: 2px; }
+    .strava-stat-card div span { font-size: 0.78rem; color: var(--muted); }
+
     @media (max-width: 960px) {
       .strava-layout {
         grid-template-columns: 1fr;
@@ -532,67 +544,74 @@
     </div>
   </section>
 
-  <!-- STRAVA -->
+  <!-- STRAVA INTEGRATION -->
   <section class="section section-alt" id="strava">
     <div class="container">
       <div class="strava-header fade-up">
-        <span class="section-label">Training Log</span>
-        <h2>Follow the Miles.</h2>
-        <p style="color:var(--muted); max-width:480px; margin-top:10px; line-height:1.8;">Every run logged, every mile earned. Follow along on Strava and see what building Cadentra actually looks like in training.</p>
+        <span class="section-label">Strava Integration</span>
+        <h2>Connect Your Strava.<br/>Cadentra Does the Rest.</h2>
+        <p style="color:var(--muted); max-width:520px; margin-top:10px; line-height:1.8;">Link your Strava account and Cadentra automatically pulls in your real run data — pace, distance, heart rate, elevation — so your training plan adapts based on how you're actually performing, not just what you planned.</p>
       </div>
-
       <div class="strava-layout">
-        <!-- Strava embed — replace the src with your own activity embed URL -->
-        <!-- To get your embed: open any Strava activity → click "..." menu → "Embed Activity" → copy the iframe src -->
         <div class="strava-embed-wrap fade-up fade-up-delay-1">
-          <div class="strava-embed-label">Latest Activity</div>
-          <!-- PASTE YOUR STRAVA IFRAME HERE — example structure:
-          <iframe height="454" width="100%" frameborder="0" allowtransparency="true" scrolling="no"
-            src="https://www.strava.com/activities/YOUR_ACTIVITY_ID/embed/YOUR_TOKEN">
-          </iframe>
-          -->
-          <div class="strava-embed-placeholder">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.25">
-              <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169" fill="currentColor"/>
-            </svg>
-            <p>Strava Activity Embed</p>
-            <span>Paste your iframe embed code here<br/>once you have your Strava activity link</span>
+          <div class="strava-embed-label" style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="display:flex; align-items:center; gap:8px;">
+              <span style="width:8px; height:8px; background:#FC4C02; border-radius:50%; display:inline-block;"></span>
+              Connected via Strava
+            </span>
+            <span style="color:var(--accent); font-size:0.68rem; letter-spacing:0.08em;">Syncing automatically</span>
+          </div>
+          <div class="strava-mock-feed">
+            <div class="strava-mock-run">
+              <div class="strava-run-icon">🏃</div>
+              <div class="strava-run-info"><strong>Morning Tempo Run</strong><span>Today &middot; 6.2 mi &middot; 7:44/mi avg</span></div>
+              <div class="strava-run-badge">Synced</div>
+            </div>
+            <div class="strava-mock-run">
+              <div class="strava-run-icon">🌅</div>
+              <div class="strava-run-info"><strong>Easy Recovery Run</strong><span>Yesterday &middot; 4.0 mi &middot; 9:12/mi avg</span></div>
+              <div class="strava-run-badge">Synced</div>
+            </div>
+            <div class="strava-mock-run">
+              <div class="strava-run-icon">⚡</div>
+              <div class="strava-run-info"><strong>Sunday Long Run</strong><span>3 days ago &middot; 11.1 mi &middot; 8:33/mi avg</span></div>
+              <div class="strava-run-badge">Synced</div>
+            </div>
+            <div class="strava-mock-run" style="opacity:0.5;">
+              <div class="strava-run-icon">🎯</div>
+              <div class="strava-run-info"><strong>Track Intervals</strong><span>5 days ago &middot; 5.0 mi &middot; 6:58/mi avg</span></div>
+              <div class="strava-run-badge">Synced</div>
+            </div>
+            <div class="strava-mock-footer"><span>Your runs &middot; powered by Strava</span></div>
           </div>
         </div>
-
         <div class="strava-info fade-up fade-up-delay-2">
           <div class="strava-stats">
             <div class="strava-stat-card">
-              <span class="strava-stat-icon">🏃</span>
-              <strong>Training Miles</strong>
-              <span>Logged weekly on Strava</span>
+              <span class="strava-stat-icon">🔗</span>
+              <div><strong>One-Tap Connect</strong><span>Authorize Strava once — no manual logging required</span></div>
             </div>
             <div class="strava-stat-card">
-              <span class="strava-stat-icon">📊</span>
-              <strong>Real Data</strong>
-              <span>Pace, HR, elevation — all there</span>
+              <span class="strava-stat-icon">🧠</span>
+              <div><strong>AI Reads Your Data</strong><span>Cadentra analyzes your pace trends, load, and recovery to adapt your plan</span></div>
             </div>
             <div class="strava-stat-card">
-              <span class="strava-stat-icon">🤝</span>
-              <strong>Join the Club</strong>
-              <span>Follow for live training updates</span>
+              <span class="strava-stat-icon">🔄</span>
+              <div><strong>Auto-Syncs Every Run</strong><span>Finish a run on Strava and your training plan updates automatically</span></div>
+            </div>
+            <div class="strava-stat-card">
+              <span class="strava-stat-icon">📈</span>
+              <div><strong>Smarter Over Time</strong><span>The more you run, the more accurately Cadentra coaches you</span></div>
             </div>
           </div>
-          <a href="https://www.strava.com/athletes/tommygardella" target="_blank" rel="noopener" class="btn btn-outline strava-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0">
-              <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/>
-            </svg>
-            Follow on Strava →
-          </a>
-          <p style="font-size:0.75rem; color:var(--muted); margin-top:10px;">
-            Update the link above with your actual Strava athlete URL.
-          </p>
+          <a href="index.html#waitlist" class="btn btn-primary strava-btn">Get Early Access →</a>
+          <p style="font-size:0.75rem; color:var(--muted); margin-top:10px; text-align:center;">Strava integration available at launch. Join the waitlist to be first.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- EMAIL CAPTURE / WAITLIST -->
+  <!-- EMAIL CAPTURE / WAITLIST -->  <!-- EMAIL CAPTURE / WAITLIST -->
   <section class="section waitlist" id="waitlist">
     <div class="container">
       <div class="waitlist-inner">
