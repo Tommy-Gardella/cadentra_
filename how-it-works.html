@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How It Works — Cadentra</title>
+  <meta name="description" content="From onboarding to race day — see exactly how Cadentra's AI coaching system works for you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ---- Page Hero ---- */
+    .page-hero {
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(79,195,247,0.06) 0%, transparent 70%);
+    }
+    .page-hero-inner { max-width: 680px; }
+    .page-hero h1 { margin-bottom: 20px; }
+    .page-hero p { font-size: 1.1rem; color: var(--muted); line-height: 1.8; }
+
+    /* ---- Steps ---- */
+    .steps-container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 32px;
+      padding-bottom: 56px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 39px;
+      top: 80px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-glow), transparent);
+    }
+
+    .step-num-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .step-num {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--border-accent);
+      background: rgba(79,195,247,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .step-icon {
+      margin-top: 14px;
+      font-size: 1.3rem;
+      opacity: 0.6;
+    }
+
+    .step-content {
+      padding-top: 10px;
+    }
+
+    .step-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .step-content h3 {
+      font-size: 1.6rem;
+      margin-bottom: 14px;
+    }
+
+    .step-content p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .step-content p + p {
+      margin-top: 10px;
+    }
+
+    /* ---- Distances Callout ---- */
+    .distances-section {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .distances-box {
+      background: rgba(79,195,247,0.04);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      padding: 40px 48px;
+    }
+
+    .distances-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .distances-header h2 { margin-bottom: 10px; }
+    .distances-header p { color: var(--muted); font-size: 0.95rem; }
+
+    .distances-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .distance-badge {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .distance-badge:hover {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+
+    .distance-badge.ultra {
+      color: var(--accent);
+      border-color: rgba(79,195,247,0.2);
+    }
+
+    /* ---- Demo Mockup ---- */
+    .demo-section { background: var(--bg-2); }
+
+    .demo-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 48px;
+    }
+
+    .demo-header h2 { margin-bottom: 12px; }
+    .demo-header p { color: var(--muted); }
+
+    .demo-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      border-radius: 20px;
+      padding: 5px 14px;
+      margin-bottom: 16px;
+    }
+
+    .demo-shell {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .demo-topbar {
+      background: #0f0f0f;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .demo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .demo-dot.red { background: #ff5f57; }
+    .demo-dot.yellow { background: #febc2e; }
+    .demo-dot.green { background: #28c840; }
+
+    .demo-topbar-title {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-left: 8px;
+      font-weight: 500;
+    }
+
+    .demo-content {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      min-height: 460px;
+    }
+
+    .demo-main {
+      border-right: 1px solid var(--border);
+      padding: 24px;
+    }
+
+    .demo-section-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    /* Weekly Plan */
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .day-card {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 6px;
+      text-align: center;
+    }
+
+    .day-card.active {
+      border-color: var(--border-accent);
+      background: rgba(79,195,247,0.06);
+    }
+
+    .day-card.rest {
+      opacity: 0.45;
+    }
+
+    .day-name {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .day-type {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .day-card.active .day-type { color: var(--accent); }
+
+    .day-dist {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* Progress Bars */
+    .progress-section { }
+
+    .progress-item {
+      margin-bottom: 16px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .progress-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .progress-val {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-track {
+      height: 6px;
+      background: var(--bg-3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .progress-fill.dim { background: rgba(79,195,247,0.35); }
+
+    /* Chat Panel */
+    .demo-chat {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .chat-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .chat-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .chat-status {
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .msg {
+      max-width: 84%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .msg-coach {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 12px 12px 12px 4px;
+      color: var(--text);
+      align-self: flex-start;
+    }
+
+    .msg-user {
+      background: var(--accent);
+      color: #0a0a0a;
+      border-radius: 12px 12px 4px 12px;
+      align-self: flex-end;
+      font-weight: 500;
+    }
+
+    .msg-sender {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .msg-user .msg-sender { text-align: right; color: rgba(10,10,10,0.6); }
+
+    .chat-input-row {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chat-input-fake {
+      flex: 1;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: var(--font-body);
+    }
+
+    .chat-send-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--accent);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .chat-send-btn svg { fill: #0a0a0a; }
+
+    @media (max-width: 900px) {
+      .demo-content {
+        grid-template-columns: 1fr;
+      }
+      .demo-main {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .week-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .distances-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .step {
+        grid-template-columns: 56px 1fr;
+        gap: 20px;
+      }
+      .step:not(:last-child)::after {
+        left: 27px;
+      }
+      .step-num {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+      }
+      .distances-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .distances-box {
+        padding: 28px 20px;
+      }
+      .week-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">CADENTRA</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-cta">Get Early Access</button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+    <div class="nav-mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <span class="section-label fade-up">The System</span>
+        <h1 class="fade-up fade-up-delay-1">From First Run to Finish Line — Here's How It Works.</h1>
+        <p class="fade-up fade-up-delay-2">Cadentra takes you from "where do I even start" to race-ready with a five-step system powered by AI and built around your real life.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="section">
+    <div class="container">
+      <div class="steps-container">
+
+        <div class="step fade-up">
+          <div class="step-num-col">
+            <div class="step-num">1</div>
+            <div class="step-icon">📋</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag">Step One</span>
+            <h3>Onboarding</h3>
+            <p>Answer a short intake — your current fitness level, weekly availability, recent race history, injury background, and your goal race. Cadentra doesn't ask for more than it needs.</p>
+            <p>In under 5 minutes, it has everything it needs to build a plan that's genuinely yours.</p>
+          </div>
+        </div>
+
+        <div class="step fade-up">
+          <div class="step-num-col">
+            <div class="step-num">2</div>
+            <div class="step-icon">⚡</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag">Step Two</span>
+            <h3>AI Plan Generation</h3>
+            <p>Cadentra's coaching engine builds a fully periodized training block — long runs, tempo sessions, easy days, cross-training, and recovery — structured around your race date and your life.</p>
+            <p>No cookie-cutter templates. The plan accounts for your current fitness, your available hours, and your target time — and it's ready in seconds.</p>
+          </div>
+        </div>
+
+        <div class="step fade-up">
+          <div class="step-num-col">
+            <div class="step-num">3</div>
+            <div class="step-icon">📅</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag">Step Three</span>
+            <h3>Weekly Calendar</h3>
+            <p>Your training lives in a clean weekly view — every workout laid out with distance, pace targets, and workout type. No interpretation needed. You see exactly what to run today, tomorrow, and the rest of the week.</p>
+            <p>Each week is a building block, and Cadentra always shows you where you are in the bigger picture.</p>
+          </div>
+        </div>
+
+        <div class="step fade-up">
+          <div class="step-num-col">
+            <div class="step-num">4</div>
+            <div class="step-icon">💬</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag">Step Four</span>
+            <h3>Adjust via Chat</h3>
+            <p>Life happens. You missed a workout. Your knee is acting up. You got an extra race on the calendar. Just tell your coach — in plain English — and it adapts.</p>
+            <p>Cadentra's chat interface understands context. It doesn't just answer questions — it updates your plan in real time based on what you tell it.</p>
+          </div>
+        </div>
+
+        <div class="step fade-up">
+          <div class="step-num-col">
+            <div class="step-num">5</div>
+            <div class="step-icon">📈</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag">Step Five</span>
+            <h3>Track Progress</h3>
+            <p>Log every run and watch your training load, pace trends, and weekly mileage build over time. Cadentra flags when you're progressing well and when to back off.</p>
+            <p>More than just numbers — it gives you the insight to understand what's working and why.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DISTANCES -->
+  <section class="section distances-section">
+    <div class="container">
+      <div class="distances-box fade-up">
+        <div class="distances-header">
+          <span class="section-label">Supported Distances</span>
+          <h2>Whatever You're Chasing, We've Got a Plan.</h2>
+          <p>From track intervals to multi-day ultras — Cadentra coaches every distance with the same precision.</p>
+        </div>
+        <div class="distances-grid">
+          <div class="distance-badge">400m</div>
+          <div class="distance-badge">800m</div>
+          <div class="distance-badge">1 Mile</div>
+          <div class="distance-badge">5K</div>
+          <div class="distance-badge">10K</div>
+          <div class="distance-badge">15K</div>
+          <div class="distance-badge">Half Marathon</div>
+          <div class="distance-badge">Marathon</div>
+          <div class="distance-badge ultra">50K</div>
+          <div class="distance-badge ultra">50 Mile</div>
+          <div class="distance-badge ultra">100K</div>
+          <div class="distance-badge ultra">100 Mile</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO MOCKUP -->
+  <section class="section demo-section">
+    <div class="container">
+      <div class="demo-header fade-up">
+        <div class="demo-badge">Interactive Demo — Coming in Week 3</div>
+        <h2>See Cadentra in Action.</h2>
+        <p>A preview of the training dashboard, chat interface, and progress tracking — all in one place.</p>
+      </div>
+
+      <div class="demo-shell fade-up fade-up-delay-1">
+        <!-- Top bar -->
+        <div class="demo-topbar">
+          <div class="demo-dot red"></div>
+          <div class="demo-dot yellow"></div>
+          <div class="demo-dot green"></div>
+          <span class="demo-topbar-title">Cadentra — Training Dashboard &nbsp;·&nbsp; Week 6 of 16 &nbsp;·&nbsp; Half Marathon</span>
+        </div>
+
+        <div class="demo-content">
+          <!-- Main: Calendar + Progress -->
+          <div class="demo-main">
+            <!-- Weekly Plan -->
+            <div class="demo-section-title">This Week's Training</div>
+            <div class="week-grid">
+              <div class="day-card rest">
+                <div class="day-name">Mon</div>
+                <div class="day-type">Rest</div>
+                <div class="day-dist">—</div>
+              </div>
+              <div class="day-card active">
+                <div class="day-name">Tue</div>
+                <div class="day-type">Tempo</div>
+                <div class="day-dist">6 mi</div>
+              </div>
+              <div class="day-card">
+                <div class="day-name">Wed</div>
+                <div class="day-type">Easy</div>
+                <div class="day-dist">4 mi</div>
+              </div>
+              <div class="day-card">
+                <div class="day-name">Thu</div>
+                <div class="day-type">Intervals</div>
+                <div class="day-dist">5 mi</div>
+              </div>
+              <div class="day-card rest">
+                <div class="day-name">Fri</div>
+                <div class="day-type">Rest</div>
+                <div class="day-dist">—</div>
+              </div>
+              <div class="day-card">
+                <div class="day-name">Sat</div>
+                <div class="day-type">Easy</div>
+                <div class="day-dist">5 mi</div>
+              </div>
+              <div class="day-card">
+                <div class="day-name">Sun</div>
+                <div class="day-type">Long Run</div>
+                <div class="day-dist">11 mi</div>
+              </div>
+            </div>
+
+            <!-- Progress Bars -->
+            <div class="demo-section-title" style="margin-top: 8px;">Training Progress</div>
+            <div class="progress-section">
+              <div class="progress-item">
+                <div class="progress-header">
+                  <span class="progress-label">Weekly Mileage</span>
+                  <span class="progress-val">31 / 36 mi</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 86%;"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-header">
+                  <span class="progress-label">Plan Completion</span>
+                  <span class="progress-val">Week 6 / 16</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 37%;"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-header">
+                  <span class="progress-label">Aerobic Base</span>
+                  <span class="progress-val">Strong ↑</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill dim" style="width: 68%;"></div>
+                </div>
+              </div>
+              <div class="progress-item" style="margin-bottom:0;">
+                <div class="progress-header">
+                  <span class="progress-label">Days to Race</span>
+                  <span class="progress-val">72 days</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill dim" style="width: 55%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Panel -->
+          <div class="demo-chat">
+            <div class="chat-header">
+              <div class="chat-avatar">🤖</div>
+              <div>
+                <div class="chat-name">Cadentra Coach</div>
+                <div class="chat-status">● Online</div>
+              </div>
+            </div>
+
+            <div class="chat-messages">
+              <div class="msg msg-coach">
+                <div class="msg-sender">Coach</div>
+                Great tempo run Tuesday — you held 7:42 pace for 4 miles. That's 8 seconds faster than last week.
+              </div>
+              <div class="msg msg-user">
+                <div class="msg-sender">You</div>
+                My knee felt a little tight on the cool-down. Should I skip Thursday?
+              </div>
+              <div class="msg msg-coach">
+                <div class="msg-sender">Coach</div>
+                Good call to flag it. Let's swap Thursday intervals for an easy 3-miler and see how it feels. I'll adjust the rest of the week accordingly.
+              </div>
+              <div class="msg msg-user">
+                <div class="msg-sender">You</div>
+                Works for me. What about Sunday's long run?
+              </div>
+              <div class="msg msg-coach">
+                <div class="msg-sender">Coach</div>
+                Keep it as planned — 11 miles at conversational pace. If the knee is still off, drop to 8 and text me after.
+              </div>
+            </div>
+
+            <div class="chat-input-row">
+              <div class="chat-input-fake">Ask your coach anything...</div>
+              <button class="chat-send-btn" aria-label="Send">
+                <svg width="14" height="14" viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(79,195,247,0.07) 0%, transparent 70%);">
+    <div class="container text-center">
+      <span class="section-label fade-up">Ready?</span>
+      <h2 class="fade-up fade-up-delay-1">Your Next PR Starts Here.</h2>
+      <p class="fade-up fade-up-delay-2" style="color: var(--muted); max-width: 440px; margin: 12px auto 36px;">Join the waitlist and be the first to train with Cadentra when we open the doors.</p>
+      <a href="index.html#waitlist" class="btn btn-primary btn-lg fade-up fade-up-delay-3">Get Early Access →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-logo">CADENTRA</div>
+          <p>The AI running coach that trains with you, not at you. Built for every distance, every pace, every goal.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Strava</a></li>
+            <li><a href="#">X / Twitter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Cadentra. All rights reserved.</p>
+        <p>Train smarter. Run further.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
