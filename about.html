@@ -111,17 +111,11 @@
 
     .video-embed {
       position: relative;
-      background: var(--bg-3);
+      background: #000;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       aspect-ratio: 16/9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
       overflow: hidden;
-      cursor: pointer;
     }
 
     .video-embed::before {
@@ -378,14 +372,8 @@
         <h2 class="fade-up fade-up-delay-1">What Is Cadentra?</h2>
         <p class="fade-up fade-up-delay-2">A 30-second look at what we're building and why it matters.</p>
 
-        <div class="video-embed fade-up fade-up-delay-3">
-          <div class="video-play-btn">
-            <svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-          <div class="video-label">
-            <strong>30-Second Pitch</strong>
-            <span>Coming Soon</span>
-          </div>
+        <div class="video-embed fade-up fade-up-delay-3" style="padding:0; overflow:hidden; background:#000;">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/6daxJ0_Q1wA?si=cNYjLcFyhxPiV-J5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; height:100%; position:absolute; top:0; left:0;"></iframe>
         </div>
       </div>
     </div>
