@@ -48,12 +48,34 @@
 (function () {
   const form = document.getElementById('hero-email-form');
   const confirm = document.getElementById('hero-confirm');
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
   if (!form || !confirm) return;
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    form.style.display = 'none';
-    confirm.classList.add('show');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    fetch('https://formspree.io/f/xjgpozbp', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    })
+    .then(function (response) {
+      if (response.ok) {
+        form.style.display = 'none';
+        confirm.classList.add('show');
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Join the Waitlist →';
+        alert('Something went wrong. Please try again.');
+      }
+    })
+    .catch(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Join the Waitlist →';
+      alert('Something went wrong. Please try again.');
+    });
   });
 })();
 
