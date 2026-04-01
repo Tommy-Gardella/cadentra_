@@ -194,9 +194,17 @@
 
     .founder-photos {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 32px;
       margin-bottom: 72px;
+    }
+
+    .founder-photos .founder-photo-wrap:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .founder-photos .founder-photo-wrap:last-child .photo-box {
+      aspect-ratio: 16/7;
     }
 
     .founder-photo-wrap {
