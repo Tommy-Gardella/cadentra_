@@ -51,7 +51,7 @@ RULES:
 - Keep conversational messages under 3 sentences — be warm and direct
 - Do NOT ask follow-up questions once you have all 3 answers — go straight to the plan
 
-IMPORTANT — after the readable plan, you MUST append a JSON data block in this EXACT format (no deviations):
+IMPORTANT — BEFORE the readable plan text, you MUST output the JSON data block FIRST in this EXACT format (no deviations). Put it at the very beginning of your response when generating a plan:
 
 [CALENDAR_DATA]
 {"planName":"...","race":"...","weeks":[{"week":1,"label":"Base Building","totalMiles":0,"days":[{"day":"MON","workout":"Rest","distance":"","note":"Full recovery day","type":"rest"},{"day":"TUE","workout":"Easy Run","distance":"5 mi","note":"Keep effort conversational","type":"easy"},{"day":"WED","workout":"Tempo Run","distance":"6 mi","note":"2 mi warm-up, 3 mi at tempo, 1 mi cool-down","type":"quality"},{"day":"THU","workout":"Easy Run","distance":"4 mi","note":"Recovery effort, low HR","type":"easy"},{"day":"FRI","workout":"Rest","distance":"","note":"Rest or gentle stretching","type":"rest"},{"day":"SAT","workout":"Fartlek","distance":"5 mi","note":"Unstructured speed play","type":"quality"},{"day":"SUN","workout":"Long Run","distance":"12 mi","note":"Easy conversational pace","type":"long"}]}]}
@@ -89,7 +89,7 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 2000,
+        max_tokens: 3500,
         system: SYSTEM_PROMPT,
         messages: messagesToSend
       })

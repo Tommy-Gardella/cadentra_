@@ -1385,11 +1385,12 @@
           try {
             var planData = JSON.parse(calMatch[1].trim());
             sessionStorage.setItem('cadentaPlan', JSON.stringify(planData));
-            addMessage('coach', 'Your training plan is ready! Building your calendar now...');
-            setTimeout(function() { window.location.href = 'plan.html'; }, 1800);
           } catch(e) {
-            addMessage('coach', reply.replace(/\[CALENDAR_DATA\][\s\S]*?\[\/CALENDAR_DATA\]/, '').trim());
+            // JSON parse failed — store raw so plan.html can show error
+            sessionStorage.setItem('cadentaPlan', 'null');
           }
+          addMessage('coach', 'Your training plan is ready! Taking you to your calendar now...');
+          setTimeout(function() { window.location.href = 'plan.html'; }, 1800);
         } else {
           addMessage('coach', reply);
         }
