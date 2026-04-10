@@ -67,6 +67,11 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    // If no messages yet, send a trigger so the AI opens with its greeting
+    const messagesToSend = messages.length === 0
+      ? [{ role: 'user', content: 'Start the conversation.' }]
+      : messages;
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -78,7 +83,7 @@ module.exports = async function handler(req, res) {
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 2000,
         system: SYSTEM_PROMPT,
-        messages: messages
+        messages: messagesToSend
       })
     });
 
