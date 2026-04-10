@@ -1175,7 +1175,24 @@
         const data = await res.json();
         const reply = data.reply;
         conversationHistory.push({ role: 'assistant', content: reply });
-        addMessage('coach', reply);
+
+        // Check if the reply contains a training plan
+        const calendarMatch = reply.match(/\[CALENDAR_DATA\]([\s\S]*?)\[\/CALENDAR_DATA\]/);
+        if (calendarMatch) {
+          try {
+            const planData = JSON.parse(calendarMatch[1].trim());
+            sessionStorage.setItem('cadentaPlan', JSON.stringify(planData));
+            // Show a brief message then redirect
+            addMessage('coach', 'Your training plan is ready! Building your calendar now...');
+            setTimeout(function() { window.location.href = 'plan.html'; }, 1800);
+          } catch (e) {
+            // JSON parse failed — show the raw text as fallback
+            const cleanReply = reply.replace(/\[CALENDAR_DATA\][\s\S]*?\[\/CALENDAR_DATA\]/, '').trim();
+            addMessage('coach', cleanReply);
+          }
+        } else {
+          addMessage('coach', reply);
+        }
 
       } catch (err) {
         removeTyping();

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Training Plan — Cadentra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ---- Plan Page ---- */
+    .plan-hero {
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(79,195,247,0.07) 0%, transparent 70%);
+    }
+
+    .plan-hero-inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .plan-title-group h1 {
+      margin-bottom: 8px;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+    }
+
+    .plan-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .plan-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .plan-meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .plan-meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .plan-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* ---- Legend ---- */
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .legend-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-right: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .legend-dot.rest    { background: #2a2a2a; border: 1px solid rgba(255,255,255,0.1); }
+    .legend-dot.easy    { background: rgba(79,195,247,0.12); border: 1px solid rgba(79,195,247,0.2); }
+    .legend-dot.quality { background: rgba(79,195,247,0.22); border: 1px solid var(--accent); }
+    .legend-dot.long    { background: rgba(255,167,38,0.12); border: 1px solid rgba(255,167,38,0.4); }
+
+    /* ---- Calendar ---- */
+    .calendar-block { margin-bottom: 40px; }
+
+    .week-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .week-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+
+    .week-label-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      border-radius: 4px;
+      padding: 3px 10px;
+    }
+
+    .week-label-tag.recovery {
+      color: #FFA726;
+      background: rgba(255,167,38,0.08);
+      border-color: rgba(255,167,38,0.25);
+    }
+
+    .week-miles {
+      margin-left: auto;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .week-miles strong {
+      color: var(--text);
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .day-card {
+      border-radius: 12px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 130px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .day-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .day-card.rest {
+      background: #131313;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .day-card.easy {
+      background: rgba(79,195,247,0.05);
+      border: 1px solid rgba(79,195,247,0.15);
+    }
+
+    .day-card.quality {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.4);
+    }
+
+    .day-card.quality::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .day-card.long {
+      background: rgba(255,167,38,0.06);
+      border: 1px solid rgba(255,167,38,0.3);
+    }
+
+    .day-card.long::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #FFA726;
+    }
+
+    .day-name {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .day-card.quality .day-name { color: var(--accent); }
+    .day-card.long .day-name { color: #FFA726; }
+
+    .day-workout {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .day-card.rest .day-workout { color: var(--muted); font-size: 0.95rem; }
+
+    .day-distance {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: auto;
+    }
+
+    .day-card.long .day-distance { color: #FFA726; }
+    .day-card.rest .day-distance { display: none; }
+
+    .day-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: 2px;
+    }
+
+    .day-card.rest .day-note { font-style: italic; }
+
+    /* ---- No Plan State ---- */
+    .no-plan {
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .no-plan h2 { margin-bottom: 16px; }
+    .no-plan p { color: var(--muted); margin-bottom: 32px; }
+
+    /* ---- Print ---- */
+    @media print {
+      .navbar, .footer, .plan-actions, .legend { display: none !important; }
+      .day-card { break-inside: avoid; }
+      .week-grid { gap: 6px; }
+      body { background: white; color: black; }
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 1000px) {
+      .week-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .week-grid { grid-template-columns: repeat(2, 1fr); }
+      .plan-hero-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="29" cy="5" r="4.5" fill="#4FC3F7"/>
+          <path d="M26 9.5 L18 24" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M24 16 L32 11" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M24 16 L14 21" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M18 24 L9 34" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+          <path d="M9 34 L5 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M18 24 L25 35" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+          <path d="M25 35 L30 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        CADENTRA
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-cta">Get Early Access</button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+    <div class="nav-mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <!-- PLAN CONTENT -->
+  <div id="plan-root">
+
+    <!-- No plan fallback -->
+    <div class="no-plan" id="no-plan-msg" style="display:none;">
+      <div class="container">
+        <span class="section-label">No Plan Found</span>
+        <h2>Your Plan Didn't Load</h2>
+        <p>Head back to the How It Works page and chat with your AI coach to generate a plan.</p>
+        <a href="how-it-works.html#training-block-builder" class="btn btn-primary">Build My Plan →</a>
+      </div>
+    </div>
+
+    <!-- Plan hero -->
+    <section class="plan-hero" id="plan-hero" style="display:none;">
+      <div class="container">
+        <div class="plan-hero-inner">
+          <div class="plan-title-group">
+            <span class="section-label">Your AI Training Plan</span>
+            <h1 id="plan-title">Training Plan</h1>
+            <div class="plan-meta">
+              <div class="plan-meta-item">
+                <span>Race:</span>
+                <strong id="plan-race">—</strong>
+              </div>
+              <div class="plan-meta-dot"></div>
+              <div class="plan-meta-item">
+                <span>Duration:</span>
+                <strong>4 Weeks</strong>
+              </div>
+              <div class="plan-meta-dot"></div>
+              <div class="plan-meta-item">
+                <span>Generated by</span>
+                <strong style="color:var(--accent);">Cadentra AI</strong>
+              </div>
+            </div>
+          </div>
+          <div class="plan-actions">
+            <a href="how-it-works.html#training-block-builder" class="btn btn-outline">Rebuild Plan</a>
+            <a href="index.html#waitlist" class="btn btn-primary">Get the Real App →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calendar -->
+    <section class="section" id="plan-calendar" style="display:none;">
+      <div class="container">
+
+        <div class="legend">
+          <span class="legend-label">Key</span>
+          <div class="legend-item"><span class="legend-dot rest"></span>Rest</div>
+          <div class="legend-item"><span class="legend-dot easy"></span>Easy Run</div>
+          <div class="legend-item"><span class="legend-dot quality"></span>Quality Workout</div>
+          <div class="legend-item"><span class="legend-dot long"></span>Long Run</div>
+        </div>
+
+        <div id="weeks-container"></div>
+
+        <!-- CTA -->
+        <div style="text-align:center; margin-top:64px; padding:56px 24px; background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius-lg);">
+          <span class="section-label">This Is Just a Preview</span>
+          <h2 style="margin-bottom:12px;">Your Real Plan Goes Deeper.</h2>
+          <p style="color:var(--muted); max-width:480px; margin:0 auto 32px; line-height:1.8;">Inside Cadentra, your plan adapts every week based on your actual runs, your chat with the coach, and how your body responds. This is what it feels like — imagine it connected to your Strava.</p>
+          <a href="index.html#waitlist" class="btn btn-primary btn-lg">Join the Waitlist — It's Free</a>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg class="footer-logo-icon" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="29" cy="5" r="4.5" fill="#4FC3F7"/>
+              <path d="M26 9.5 L18 24" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M24 16 L32 11" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M24 16 L14 21" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M18 24 L9 34" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+              <path d="M9 34 L5 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M18 24 L25 35" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+              <path d="M25 35 L30 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            CADENTRA
+          </div>
+          <p>The AI running coach that trains with you, not at you.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Strava</a></li>
+            <li><a href="#">X / Twitter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Cadentra. All rights reserved.</p>
+        <p>Train smarter. Run further.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  (function () {
+    const raw = sessionStorage.getItem('cadentaPlan');
+    if (!raw) {
+      document.getElementById('no-plan-msg').style.display = 'block';
+      return;
+    }
+
+    let plan;
+    try { plan = JSON.parse(raw); } catch (e) {
+      document.getElementById('no-plan-msg').style.display = 'block';
+      return;
+    }
+
+    // Show plan sections
+    document.getElementById('plan-hero').style.display = '';
+    document.getElementById('plan-calendar').style.display = '';
+    document.getElementById('plan-title').textContent = plan.planName || 'Your Training Plan';
+    document.getElementById('plan-race').textContent = plan.race || '—';
+    document.title = (plan.planName || 'Training Plan') + ' — Cadentra';
+
+    const weekLabels = ['Base Building', 'Build Phase', 'Peak Week', 'Recovery Week'];
+    const container = document.getElementById('weeks-container');
+
+    (plan.weeks || []).forEach(function (week, wi) {
+      const isRecovery = wi === 3;
+      const label = week.label || weekLabels[wi] || ('Week ' + week.week);
+      const totalMiles = week.totalMiles || 0;
+
+      const block = document.createElement('div');
+      block.className = 'calendar-block';
+
+      const header = document.createElement('div');
+      header.className = 'week-header';
+      header.innerHTML =
+        '<span class="week-title">Week ' + (week.week || (wi + 1)) + '</span>' +
+        '<span class="week-label-tag' + (isRecovery ? ' recovery' : '') + '">' + label + '</span>' +
+        (totalMiles ? '<span class="week-miles">~<strong>' + totalMiles + '</strong> miles</span>' : '');
+
+      const grid = document.createElement('div');
+      grid.className = 'week-grid';
+
+      (week.days || []).forEach(function (day) {
+        const type = (day.type || 'easy').toLowerCase();
+        const card = document.createElement('div');
+        card.className = 'day-card ' + type;
+
+        card.innerHTML =
+          '<div class="day-name">' + (day.day || '') + '</div>' +
+          '<div class="day-workout">' + (day.workout || '') + '</div>' +
+          (day.distance ? '<div class="day-distance">' + day.distance + '</div>' : '') +
+          (day.note ? '<div class="day-note">' + day.note + '</div>' : '');
+
+        grid.appendChild(card);
+      });
+
+      block.appendChild(header);
+      block.appendChild(grid);
+      container.appendChild(block);
+    });
+  })();
+  </script>
+</body>
+</html>
