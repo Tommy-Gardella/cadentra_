@@ -687,6 +687,108 @@
     .ai-send-btn:hover { background: #81D4FA; }
     .ai-send-btn:active { transform: scale(0.95); }
     .ai-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ---- Interactive Builder ---- */
+    .builder-header { margin-bottom: 48px; }
+
+    .builder-q-block {
+      margin-bottom: 44px;
+      padding-bottom: 44px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .builder-q-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .builder-q-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      border: 1.5px solid var(--border-accent);
+      color: var(--accent);
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .builder-q-title {
+      font-size: 1.25rem;
+      margin-bottom: 4px;
+    }
+
+    .builder-q-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Selectable badges (single-select) */
+    .distance-badge.selectable,
+    .option-badge {
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    .distance-badge.selectable:hover,
+    .option-badge:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .distance-badge.selectable.selected,
+    .option-badge.selected {
+      background: var(--accent);
+      color: #0a0a0a;
+      border-color: var(--accent);
+      font-weight: 700;
+      transform: scale(1.04);
+    }
+
+    .option-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .option-badge {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .builder-action {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .builder-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    #builder-generate-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
   </style>
 </head>
 <body>
@@ -810,16 +912,91 @@
   </section>
 
 
-  <!-- AI TRAINING BLOCK BUILDER -->
-  <section class="section" id="training-block-builder" style="background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,195,247,0.05) 0%, transparent 70%);">
+  <!-- AI PLAN BUILDER (distances + mileage + workouts + chat) -->
+  <section class="section section-alt" id="training-block-builder">
     <div class="container">
-      <div style="max-width:760px; margin:0 auto;">
-        <span class="section-label">AI Plan Preview</span>
-        <h2 style="margin-bottom:12px;">Create Your Next Training Block</h2>
-        <p style="color:var(--muted); margin-bottom:40px; font-size:1rem; line-height:1.7;">Chat with your AI coach below. Answer 3 quick questions and get a real, personalized month of training — built for you, right now.</p>
 
+      <div class="builder-header fade-up">
+        <span class="section-label">AI Plan Builder</span>
+        <h2>Create Your Next Training Block</h2>
+        <p style="color:var(--muted); max-width:560px; margin-top:10px; line-height:1.8;">Select your options below, then your AI coach will build a full personalized month of training — tailored to you.</p>
+      </div>
+
+      <!-- Q1: Race Distance -->
+      <div class="builder-q-block fade-up">
+        <div class="builder-q-label">
+          <span class="builder-q-num">1</span>
+          <div>
+            <h3 class="builder-q-title">What race are you training for?</h3>
+            <p class="builder-q-sub">Select one distance</p>
+          </div>
+        </div>
+        <div class="distances-grid builder-grid" id="q1-distances">
+          <div class="distance-badge selectable" data-group="q1" data-value="400m">400m</div>
+          <div class="distance-badge selectable" data-group="q1" data-value="800m">800m</div>
+          <div class="distance-badge selectable" data-group="q1" data-value="1 Mile">1 Mile</div>
+          <div class="distance-badge selectable" data-group="q1" data-value="5K">5K</div>
+          <div class="distance-badge selectable" data-group="q1" data-value="10K">10K</div>
+          <div class="distance-badge selectable" data-group="q1" data-value="15K">15K</div>
+          <div class="distance-badge selectable" data-group="q1" data-value="Half Marathon">Half Marathon</div>
+          <div class="distance-badge selectable" data-group="q1" data-value="Marathon">Marathon</div>
+          <div class="distance-badge selectable ultra" data-group="q1" data-value="50K">50K</div>
+          <div class="distance-badge selectable ultra" data-group="q1" data-value="50 Mile">50 Mile</div>
+          <div class="distance-badge selectable ultra" data-group="q1" data-value="100K">100K</div>
+          <div class="distance-badge selectable ultra" data-group="q1" data-value="100 Mile">100 Mile</div>
+        </div>
+      </div>
+
+      <!-- Q2: Weekly Mileage -->
+      <div class="builder-q-block fade-up fade-up-delay-1">
+        <div class="builder-q-label">
+          <span class="builder-q-num">2</span>
+          <div>
+            <h3 class="builder-q-title">How much do you currently run?</h3>
+            <p class="builder-q-sub">Select your average miles per week</p>
+          </div>
+        </div>
+        <div class="option-grid" id="q2-mileage">
+          <div class="option-badge" data-group="q2" data-value="under 20 miles per week">Under 20 mi/wk</div>
+          <div class="option-badge" data-group="q2" data-value="20 to 35 miles per week">20&ndash;35 mi/wk</div>
+          <div class="option-badge" data-group="q2" data-value="35 to 50 miles per week">35&ndash;50 mi/wk</div>
+          <div class="option-badge" data-group="q2" data-value="50 to 65 miles per week">50&ndash;65 mi/wk</div>
+          <div class="option-badge" data-group="q2" data-value="65 or more miles per week">65+ mi/wk</div>
+        </div>
+      </div>
+
+      <!-- Q3: Favourite Workouts -->
+      <div class="builder-q-block fade-up fade-up-delay-2">
+        <div class="builder-q-label">
+          <span class="builder-q-num">3</span>
+          <div>
+            <h3 class="builder-q-title">What are your favourite workouts?</h3>
+            <p class="builder-q-sub">Select all that apply (optional)</p>
+          </div>
+        </div>
+        <div class="option-grid" id="q3-workouts">
+          <div class="option-badge multi" data-group="q3" data-value="Tempo Runs">Tempo Runs</div>
+          <div class="option-badge multi" data-group="q3" data-value="Track Intervals">Track Intervals</div>
+          <div class="option-badge multi" data-group="q3" data-value="Long Runs">Long Runs</div>
+          <div class="option-badge multi" data-group="q3" data-value="Hill Repeats">Hill Repeats</div>
+          <div class="option-badge multi" data-group="q3" data-value="Fartlek">Fartlek</div>
+          <div class="option-badge multi" data-group="q3" data-value="Easy Runs">Easy Runs</div>
+          <div class="option-badge multi" data-group="q3" data-value="Cross Training">Cross Training</div>
+          <div class="option-badge multi" data-group="q3" data-value="Strides">Strides</div>
+        </div>
+      </div>
+
+      <!-- Generate CTA -->
+      <div class="builder-action fade-up fade-up-delay-3">
+        <button class="btn btn-primary btn-lg" id="builder-generate-btn" disabled>
+          Build My Plan &rarr;
+        </button>
+        <p class="builder-hint" id="builder-hint">Select your race distance and weekly mileage to continue</p>
+      </div>
+
+      <!-- AI Chat (shown after generate) -->
+      <div id="ai-chat-wrapper" style="display:none; margin-top:48px;">
         <div class="ai-chat-shell">
-          <!-- Header -->
           <div class="ai-chat-header">
             <div class="ai-chat-avatar">
               <svg width="20" height="22" viewBox="0 0 40 44" fill="none">
@@ -837,52 +1014,21 @@
               <div class="ai-chat-name">Cadentra Coach</div>
               <div class="ai-chat-status"><span class="ai-status-dot"></span>Online &amp; Ready</div>
             </div>
-            <button class="ai-reset-btn" id="ai-reset" title="Start over">&#8635; Start Over</button>
+            <button class="ai-reset-btn" id="ai-reset" title="Start over">&circlearrowleft; Start Over</button>
           </div>
-
-          <!-- Messages -->
           <div class="ai-chat-messages" id="ai-chat-messages"></div>
-
-          <!-- Input -->
           <div class="ai-chat-input-row">
-            <input type="text" id="ai-chat-input" placeholder="Type your answer..." autocomplete="off" />
+            <input type="text" id="ai-chat-input" placeholder="Ask a follow-up or type anything..." autocomplete="off" />
             <button id="ai-chat-send" class="ai-send-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
             </button>
           </div>
         </div>
-
-        <p style="text-align:center; font-size:0.75rem; color:var(--muted-2); margin-top:16px;">This is a live preview of Cadentra&apos;s AI coaching engine. Your real plan inside the app will be even more detailed.</p>
+        <p style="text-align:center; font-size:0.75rem; color:var(--muted-2); margin-top:14px;">Live preview of Cadentra&apos;s AI coaching engine. Your real plan in the app will be even more detailed.</p>
       </div>
+
     </div>
   </section>
-  <!-- DISTANCES -->
-  <section class="section distances-section">
-    <div class="container">
-      <div class="distances-box fade-up">
-        <div class="distances-header">
-          <span class="section-label">Supported Distances</span>
-          <h2>Whatever You're Chasing, We've Got a Plan.</h2>
-          <p>From track intervals to multi-day ultras — Cadentra coaches every distance with the same precision.</p>
-        </div>
-        <div class="distances-grid">
-          <div class="distance-badge">400m</div>
-          <div class="distance-badge">800m</div>
-          <div class="distance-badge">1 Mile</div>
-          <div class="distance-badge">5K</div>
-          <div class="distance-badge">10K</div>
-          <div class="distance-badge">15K</div>
-          <div class="distance-badge">Half Marathon</div>
-          <div class="distance-badge">Marathon</div>
-          <div class="distance-badge ultra">50K</div>
-          <div class="distance-badge ultra">50 Mile</div>
-          <div class="distance-badge ultra">100K</div>
-          <div class="distance-badge ultra">100 Mile</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- DEMO MOCKUP -->
   <section class="section demo-section">
     <div class="container">
@@ -1091,32 +1237,97 @@
 
   <script>
   (function () {
-    const messagesEl = document.getElementById('ai-chat-messages');
-    const inputEl = document.getElementById('ai-chat-input');
-    const sendBtn = document.getElementById('ai-chat-send');
-    const resetBtn = document.getElementById('ai-reset');
-    if (!messagesEl || !inputEl) return;
+    var q1 = null;
+    var q2 = null;
+    var q3 = [];
 
-    let conversationHistory = [];
-    let isWaiting = false;
+    var generateBtn = document.getElementById('builder-generate-btn');
+    var hintEl      = document.getElementById('builder-hint');
+    var chatWrapper = document.getElementById('ai-chat-wrapper');
+    var messagesEl  = document.getElementById('ai-chat-messages');
+    var inputEl     = document.getElementById('ai-chat-input');
+    var sendBtn     = document.getElementById('ai-chat-send');
+    var resetBtn    = document.getElementById('ai-reset');
 
-    function scrollToBottom() {
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+    var conversationHistory = [];
+    var isWaiting = false;
+    var chatStarted = false;
+
+    document.querySelectorAll('.distance-badge.selectable').forEach(function(badge) {
+      badge.addEventListener('click', function() {
+        document.querySelectorAll('.distance-badge.selectable').forEach(function(b) { b.classList.remove('selected'); });
+        badge.classList.add('selected');
+        q1 = badge.getAttribute('data-value');
+        updateBtn();
+      });
+    });
+
+    document.querySelectorAll('#q2-mileage .option-badge').forEach(function(badge) {
+      badge.addEventListener('click', function() {
+        document.querySelectorAll('#q2-mileage .option-badge').forEach(function(b) { b.classList.remove('selected'); });
+        badge.classList.add('selected');
+        q2 = badge.getAttribute('data-value');
+        updateBtn();
+      });
+    });
+
+    document.querySelectorAll('#q3-workouts .option-badge').forEach(function(badge) {
+      badge.addEventListener('click', function() {
+        badge.classList.toggle('selected');
+        var val = badge.getAttribute('data-value');
+        if (badge.classList.contains('selected')) {
+          q3.push(val);
+        } else {
+          q3 = q3.filter(function(v) { return v !== val; });
+        }
+      });
+    });
+
+    function updateBtn() {
+      var ready = q1 && q2;
+      generateBtn.disabled = !ready;
+      hintEl.textContent = ready
+        ? 'Ready! Click Build My Plan to generate your training block.'
+        : 'Select your race distance and weekly mileage to continue';
     }
 
-    function addMessage(role, text) {
-      const isPlan = role === 'coach' && text.includes('CADENTRA TRAINING PLAN');
-      const wrapper = document.createElement('div');
-      wrapper.className = 'ai-msg ' + (role === 'user' ? 'ai-msg-user' : (isPlan ? 'ai-msg-plan' : 'ai-msg-coach'));
+    generateBtn.addEventListener('click', function() {
+      if (!q1 || !q2) return;
+      chatWrapper.style.display = 'block';
+      chatWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!chatStarted) {
+        chatStarted = true;
+        var workoutStr = q3.length > 0 ? q3.join(', ') : 'no specific preference';
+        var openingMsg = 'I am training for a ' + q1 + '. I currently run ' + q2 + '. My favourite workouts are: ' + workoutStr + '. Please build me a full training plan.';
+        sendMessage(openingMsg);
+      }
+    });
 
-      const sender = document.createElement('div');
+    resetBtn && resetBtn.addEventListener('click', function() {
+      conversationHistory = [];
+      messagesEl.innerHTML = '';
+      chatWrapper.style.display = 'none';
+      chatStarted = false;
+      q1 = null; q2 = null; q3 = [];
+      document.querySelectorAll('.selectable.selected, .option-badge.selected').forEach(function(b) { b.classList.remove('selected'); });
+      generateBtn.disabled = true;
+      hintEl.textContent = 'Select your race distance and weekly mileage to continue';
+      var section = document.getElementById('training-block-builder');
+      if (section) window.scrollTo({ top: section.offsetTop - 80, behavior: 'smooth' });
+    });
+
+    function scrollToBottom() { messagesEl.scrollTop = messagesEl.scrollHeight; }
+
+    function addMessage(role, text) {
+      var isPlan = role === 'coach' && text.indexOf('CADENTRA TRAINING PLAN') > -1;
+      var wrapper = document.createElement('div');
+      wrapper.className = 'ai-msg ' + (role === 'user' ? 'ai-msg-user' : (isPlan ? 'ai-msg-plan' : 'ai-msg-coach'));
+      var sender = document.createElement('div');
       sender.className = 'ai-msg-sender';
       sender.textContent = role === 'user' ? 'You' : 'Cadentra Coach';
-
-      const bubble = document.createElement('div');
+      var bubble = document.createElement('div');
       bubble.className = 'ai-msg-bubble';
       bubble.textContent = text;
-
       wrapper.appendChild(sender);
       wrapper.appendChild(bubble);
       messagesEl.appendChild(wrapper);
@@ -1124,106 +1335,87 @@
     }
 
     function showTyping() {
-      const el = document.createElement('div');
+      var el = document.createElement('div');
       el.className = 'ai-typing';
       el.id = 'ai-typing-indicator';
       el.innerHTML = '<span></span><span></span><span></span>';
       messagesEl.appendChild(el);
       scrollToBottom();
-      return el;
     }
 
     function removeTyping() {
-      const el = document.getElementById('ai-typing-indicator');
+      var el = document.getElementById('ai-typing-indicator');
       if (el) el.remove();
     }
 
     function setInputEnabled(enabled) {
-      inputEl.disabled = !enabled;
-      sendBtn.disabled = !enabled;
-      if (enabled) inputEl.focus();
+      if (inputEl) inputEl.disabled = !enabled;
+      if (sendBtn) sendBtn.disabled = !enabled;
+      if (enabled && inputEl) inputEl.focus();
     }
 
-    async function sendMessage(userText) {
+    function sendMessage(userText) {
       if (isWaiting) return;
       isWaiting = true;
       setInputEnabled(false);
-
       if (userText) {
         conversationHistory.push({ role: 'user', content: userText });
         addMessage('user', userText);
       }
-
-      const typing = showTyping();
-
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: conversationHistory })
-        });
-
+      showTyping();
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: conversationHistory })
+      })
+      .then(function(res) {
         removeTyping();
-
         if (!res.ok) {
-          addMessage('coach', 'Sorry, something went wrong. Please try again.');
-          setInputEnabled(true);
-          isWaiting = false;
-          return;
+          addMessage('coach', 'Something went wrong. Please try again.');
+          isWaiting = false; setInputEnabled(true); return null;
         }
-
-        const data = await res.json();
-        const reply = data.reply;
+        return res.json();
+      })
+      .then(function(data) {
+        if (!data) return;
+        var reply = data.reply;
         conversationHistory.push({ role: 'assistant', content: reply });
-
-        // Check if the reply contains a training plan
-        const calendarMatch = reply.match(/\[CALENDAR_DATA\]([\s\S]*?)\[\/CALENDAR_DATA\]/);
-        if (calendarMatch) {
+        var calMatch = reply.match(/\[CALENDAR_DATA\]([\s\S]*?)\[\/CALENDAR_DATA\]/);
+        if (calMatch) {
           try {
-            const planData = JSON.parse(calendarMatch[1].trim());
+            var planData = JSON.parse(calMatch[1].trim());
             sessionStorage.setItem('cadentaPlan', JSON.stringify(planData));
-            // Show a brief message then redirect
             addMessage('coach', 'Your training plan is ready! Building your calendar now...');
             setTimeout(function() { window.location.href = 'plan.html'; }, 1800);
-          } catch (e) {
-            // JSON parse failed — show the raw text as fallback
-            const cleanReply = reply.replace(/\[CALENDAR_DATA\][\s\S]*?\[\/CALENDAR_DATA\]/, '').trim();
-            addMessage('coach', cleanReply);
+          } catch(e) {
+            addMessage('coach', reply.replace(/\[CALENDAR_DATA\][\s\S]*?\[\/CALENDAR_DATA\]/, '').trim());
           }
         } else {
           addMessage('coach', reply);
         }
-
-      } catch (err) {
+        isWaiting = false; setInputEnabled(true);
+      })
+      .catch(function() {
         removeTyping();
-        addMessage('coach', 'Connection error. Please check your internet and try again.');
-      }
-
-      isWaiting = false;
-      setInputEnabled(true);
+        addMessage('coach', 'Connection error. Please try again.');
+        isWaiting = false; setInputEnabled(true);
+      });
     }
 
-    function handleSend() {
-      const text = inputEl.value.trim();
+    sendBtn && sendBtn.addEventListener('click', function() {
+      var text = inputEl.value.trim();
       if (!text || isWaiting) return;
-      inputEl.value = '';
-      sendMessage(text);
-    }
-
-    sendBtn.addEventListener('click', handleSend);
-    inputEl.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') handleSend();
+      inputEl.value = ''; sendMessage(text);
     });
 
-    resetBtn.addEventListener('click', function () {
-      conversationHistory = [];
-      messagesEl.innerHTML = '';
-      inputEl.value = '';
-      sendMessage(null);
+    inputEl && inputEl.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var text = inputEl.value.trim();
+        if (!text || isWaiting) return;
+        inputEl.value = ''; sendMessage(text);
+      }
     });
 
-    // Kick off with coach greeting
-    sendMessage(null);
   })();
   </script></body>
 </html>
