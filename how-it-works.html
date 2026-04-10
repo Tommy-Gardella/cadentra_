@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -476,6 +476,217 @@
         grid-template-columns: repeat(4, 1fr);
       }
     }
+
+    /* ---- AI Chat Builder ---- */
+    .ai-chat-shell {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .ai-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ai-chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      border: 1.5px solid var(--border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ai-chat-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .ai-chat-status {
+      font-size: 0.72rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ai-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+      display: inline-block;
+    }
+
+    .ai-reset-btn {
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .ai-reset-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .ai-chat-messages {
+      height: 420px;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+
+    .ai-chat-messages::-webkit-scrollbar { width: 4px; }
+    .ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .ai-chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .ai-msg {
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+      gap: 4px;
+      animation: fadeUp 0.3s ease forwards;
+    }
+
+    .ai-msg-coach { align-self: flex-start; }
+    .ai-msg-user { align-self: flex-end; }
+
+    .ai-msg-sender {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 4px;
+    }
+
+    .ai-msg-user .ai-msg-sender { text-align: right; }
+
+    .ai-msg-bubble {
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .ai-msg-coach .ai-msg-bubble {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 4px 14px 14px 14px;
+      color: var(--text);
+    }
+
+    .ai-msg-user .ai-msg-bubble {
+      background: var(--accent);
+      color: #0a0a0a;
+      font-weight: 500;
+      border-radius: 14px 14px 4px 14px;
+    }
+
+    .ai-msg-plan .ai-msg-bubble {
+      background: rgba(79,195,247,0.04);
+      border: 1px solid var(--border-accent);
+      border-radius: 4px 14px 14px 14px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--text);
+      max-width: 100%;
+    }
+
+    .ai-typing {
+      align-self: flex-start;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 12px 16px;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 4px 14px 14px 14px;
+    }
+
+    .ai-typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: typing-bounce 1.2s infinite ease-in-out;
+    }
+
+    .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing-bounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    .ai-chat-input-row {
+      display: flex;
+      gap: 10px;
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-3);
+    }
+
+    .ai-chat-input-row input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .ai-chat-input-row input:focus { border-color: var(--accent); }
+    .ai-chat-input-row input::placeholder { color: var(--muted-2); }
+    .ai-chat-input-row input:disabled { opacity: 0.5; }
+
+    .ai-send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--accent);
+      border: none;
+      color: #0a0a0a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .ai-send-btn:hover { background: #81D4FA; }
+    .ai-send-btn:active { transform: scale(0.95); }
+    .ai-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -598,6 +809,53 @@
     </div>
   </section>
 
+
+  <!-- AI TRAINING BLOCK BUILDER -->
+  <section class="section" id="training-block-builder" style="background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,195,247,0.05) 0%, transparent 70%);">
+    <div class="container">
+      <div style="max-width:760px; margin:0 auto;">
+        <span class="section-label">AI Plan Preview</span>
+        <h2 style="margin-bottom:12px;">Create Your Next Training Block</h2>
+        <p style="color:var(--muted); margin-bottom:40px; font-size:1rem; line-height:1.7;">Chat with your AI coach below. Answer 3 quick questions and get a real, personalized month of training — built for you, right now.</p>
+
+        <div class="ai-chat-shell">
+          <!-- Header -->
+          <div class="ai-chat-header">
+            <div class="ai-chat-avatar">
+              <svg width="20" height="22" viewBox="0 0 40 44" fill="none">
+                <circle cx="29" cy="5" r="4.5" fill="#4FC3F7"/>
+                <path d="M26 9.5 L18 24" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+                <path d="M24 16 L32 11" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M24 16 L14 21" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M18 24 L9 34" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+                <path d="M9 34 L5 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M18 24 L25 35" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+                <path d="M25 35 L30 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ai-chat-name">Cadentra Coach</div>
+              <div class="ai-chat-status"><span class="ai-status-dot"></span>Online &amp; Ready</div>
+            </div>
+            <button class="ai-reset-btn" id="ai-reset" title="Start over">&#8635; Start Over</button>
+          </div>
+
+          <!-- Messages -->
+          <div class="ai-chat-messages" id="ai-chat-messages"></div>
+
+          <!-- Input -->
+          <div class="ai-chat-input-row">
+            <input type="text" id="ai-chat-input" placeholder="Type your answer..." autocomplete="off" />
+            <button id="ai-chat-send" class="ai-send-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <p style="text-align:center; font-size:0.75rem; color:var(--muted-2); margin-top:16px;">This is a live preview of Cadentra&apos;s AI coaching engine. Your real plan inside the app will be even more detailed.</p>
+      </div>
+    </div>
+  </section>
   <!-- DISTANCES -->
   <section class="section distances-section">
     <div class="container">
@@ -830,5 +1088,125 @@
   </footer>
 
   <script src="script.js"></script>
-</body>
+
+  <script>
+  (function () {
+    const messagesEl = document.getElementById('ai-chat-messages');
+    const inputEl = document.getElementById('ai-chat-input');
+    const sendBtn = document.getElementById('ai-chat-send');
+    const resetBtn = document.getElementById('ai-reset');
+    if (!messagesEl || !inputEl) return;
+
+    let conversationHistory = [];
+    let isWaiting = false;
+
+    function scrollToBottom() {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function addMessage(role, text) {
+      const isPlan = role === 'coach' && text.includes('CADENTRA TRAINING PLAN');
+      const wrapper = document.createElement('div');
+      wrapper.className = 'ai-msg ' + (role === 'user' ? 'ai-msg-user' : (isPlan ? 'ai-msg-plan' : 'ai-msg-coach'));
+
+      const sender = document.createElement('div');
+      sender.className = 'ai-msg-sender';
+      sender.textContent = role === 'user' ? 'You' : 'Cadentra Coach';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'ai-msg-bubble';
+      bubble.textContent = text;
+
+      wrapper.appendChild(sender);
+      wrapper.appendChild(bubble);
+      messagesEl.appendChild(wrapper);
+      scrollToBottom();
+    }
+
+    function showTyping() {
+      const el = document.createElement('div');
+      el.className = 'ai-typing';
+      el.id = 'ai-typing-indicator';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      messagesEl.appendChild(el);
+      scrollToBottom();
+      return el;
+    }
+
+    function removeTyping() {
+      const el = document.getElementById('ai-typing-indicator');
+      if (el) el.remove();
+    }
+
+    function setInputEnabled(enabled) {
+      inputEl.disabled = !enabled;
+      sendBtn.disabled = !enabled;
+      if (enabled) inputEl.focus();
+    }
+
+    async function sendMessage(userText) {
+      if (isWaiting) return;
+      isWaiting = true;
+      setInputEnabled(false);
+
+      if (userText) {
+        conversationHistory.push({ role: 'user', content: userText });
+        addMessage('user', userText);
+      }
+
+      const typing = showTyping();
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: conversationHistory })
+        });
+
+        removeTyping();
+
+        if (!res.ok) {
+          addMessage('coach', 'Sorry, something went wrong. Please try again.');
+          setInputEnabled(true);
+          isWaiting = false;
+          return;
+        }
+
+        const data = await res.json();
+        const reply = data.reply;
+        conversationHistory.push({ role: 'assistant', content: reply });
+        addMessage('coach', reply);
+
+      } catch (err) {
+        removeTyping();
+        addMessage('coach', 'Connection error. Please check your internet and try again.');
+      }
+
+      isWaiting = false;
+      setInputEnabled(true);
+    }
+
+    function handleSend() {
+      const text = inputEl.value.trim();
+      if (!text || isWaiting) return;
+      inputEl.value = '';
+      sendMessage(text);
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    inputEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') handleSend();
+    });
+
+    resetBtn.addEventListener('click', function () {
+      conversationHistory = [];
+      messagesEl.innerHTML = '';
+      inputEl.value = '';
+      sendMessage(null);
+    });
+
+    // Kick off with coach greeting
+    sendMessage(null);
+  })();
+  </script></body>
 </html>
