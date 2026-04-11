@@ -155,13 +155,8 @@
         mobileMenu.appendChild(soLink);
       }
     } else {
-      // Not logged in — keep "Get Early Access", add a Log In link before it
-      var loginLink = document.createElement('a');
-      loginLink.href = 'login.html';
-      loginLink.className = 'nav-login';
-      loginLink.textContent = 'Log In';
-      cta.parentNode.insertBefore(loginLink, cta);
-      initNavDefault();
+      // Not logged in — "Get Early Access" goes to login
+      cta.onclick = function () { location.href = 'login.html'; };
     }
   }).catch(function () { initNavDefault(); });
 })();
