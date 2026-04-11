@@ -293,6 +293,66 @@
       color: var(--muted);
     }
 
+
+    /* ---- Runner Types ---- */
+    .runner-types-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .runner-type-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s;
+    }
+
+    .runner-type-card:hover {
+      border-color: var(--border-accent);
+      background: var(--card-bg-hover);
+      transform: translateY(-4px);
+    }
+
+    .runner-type-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .runner-type-card h3 {
+      font-size: 1.3rem;
+      margin: 0;
+    }
+
+    .runner-type-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .runner-type-link {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.03em;
+      transition: opacity 0.15s;
+      margin-top: 4px;
+    }
+
+    .runner-type-link:hover { opacity: 0.75; }
+
+    @media (max-width: 900px) {
+      .runner-types-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .runner-types-grid { grid-template-columns: 1fr; }
+    }
     /* ---- Strava ---- */
     .strava-header { margin-bottom: 48px; }
 
@@ -552,6 +612,70 @@
     </div>
   </section>
 
+
+  <!-- PERSONALIZED PLANS -->
+  <section class="section" style="background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,195,247,0.06) 0%, transparent 70%);">
+    <div class="container">
+      <div style="text-align:center; max-width:680px; margin:0 auto 60px;">
+        <span class="section-label fade-up">Personalized For You</span>
+        <h2 class="fade-up fade-up-delay-1">Every Runner Gets a Plan Built Around Them.</h2>
+        <p class="fade-up fade-up-delay-2" style="color:var(--muted); margin-top:14px; line-height:1.8; font-size:1rem;">Whether you're lacing up for the first time or chasing a 100-mile buckle, Cadentra builds a training block tailored to your race, your mileage, and your favourite workouts — in seconds.</p>
+      </div>
+
+      <div class="runner-types-grid">
+
+        <div class="runner-type-card fade-up">
+          <div class="runner-type-icon">🌱</div>
+          <h3>Beginners</h3>
+          <p>First 5K or couch-to-running? Cadentra starts where you are and builds you up safely — no guesswork, no overwhelm.</p>
+          <a href="how-it-works.html#training-block-builder" class="runner-type-link">Build your first plan →</a>
+        </div>
+
+        <div class="runner-type-card fade-up fade-up-delay-1">
+          <div class="runner-type-icon">⚡</div>
+          <h3>Track &amp; Speed</h3>
+          <p>Training for an 800m, mile, or 5K? Get a speed-focused block with intervals, tempos, and race-specific workouts baked in.</p>
+          <a href="how-it-works.html#training-block-builder" class="runner-type-link">Build your speed plan →</a>
+        </div>
+
+        <div class="runner-type-card fade-up fade-up-delay-2">
+          <div class="runner-type-icon">🏅</div>
+          <h3>Road Racers</h3>
+          <p>Half marathon or marathon on the calendar? Cadentra structures your entire build — from base to taper — around your race date.</p>
+          <a href="how-it-works.html#training-block-builder" class="runner-type-link">Build your race plan →</a>
+        </div>
+
+        <div class="runner-type-card fade-up fade-up-delay-3">
+          <div class="runner-type-icon">🏔️</div>
+          <h3>Ultra Runners</h3>
+          <p>50K to 100 miles — Cadentra knows the difference between an ultra build and a road plan, and coaches you accordingly.</p>
+          <a href="how-it-works.html#training-block-builder" class="runner-type-link">Build your ultra plan →</a>
+        </div>
+
+        <div class="runner-type-card fade-up">
+          <div class="runner-type-icon">🔄</div>
+          <h3>Comeback Runners</h3>
+          <p>Returning from injury or a long break? Cadentra eases you back in with a conservative build that respects where your body is now.</p>
+          <a href="how-it-works.html#training-block-builder" class="runner-type-link">Build your comeback plan →</a>
+        </div>
+
+        <div class="runner-type-card fade-up fade-up-delay-1">
+          <div class="runner-type-icon">📈</div>
+          <h3>PR Hunters</h3>
+          <p>Done the distance, want to go faster? Cadentra builds around your current fitness to find the time on the clock you haven't found yet.</p>
+          <a href="how-it-works.html#training-block-builder" class="runner-type-link">Build your PR plan →</a>
+        </div>
+
+      </div>
+
+      <div class="plans-cta fade-up" style="text-align:center; margin-top:56px;">
+        <a href="how-it-works.html#training-block-builder" class="btn btn-primary btn-lg">
+          Try It Now — Build Your Free Plan →
+        </a>
+        <p style="font-size:0.78rem; color:var(--muted); margin-top:12px;">No account needed. Takes 60 seconds.</p>
+      </div>
+    </div>
+  </section>
   <!-- STRAVA INTEGRATION -->
   <section class="section section-alt" id="strava">
     <div class="container">
