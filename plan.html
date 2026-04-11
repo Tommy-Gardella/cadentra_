@@ -1054,7 +1054,7 @@
       var name = newFolderInput.value.trim();
       if (!name) return;
       newFolderAddBtn.disabled = true;
-      var { data, error } = await sb.from('folders').insert({ name: name }).select().single();
+      var { data, error } = await sb.from('folders').insert({ name: name, user_id: currentUser.id }).select().single();
       newFolderAddBtn.disabled = false;
       if (error) { errDiv.textContent = error.message; errDiv.style.display = ''; return; }
       userFolders.push(data);
@@ -1076,7 +1076,8 @@
       var payload = {
         name: name,
         plan_json: JSON.parse(raw),
-        folder_id: folderSel.value || null
+        folder_id: folderSel.value || null,
+        user_id: currentUser.id
       };
       var { error } = await sb.from('plans').insert(payload);
       confirmBtn.disabled = false;
