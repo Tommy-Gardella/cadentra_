@@ -241,6 +241,30 @@ h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
   color: #0a0a0a;
 }
 
+.nav-login {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-login:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .nav-toggle {
   display: none;
   background: none;
@@ -501,7 +525,8 @@ h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
   .nav-links,
-  .nav-cta {
+  .nav-cta,
+  .nav-login {
     display: none;
   }
 
