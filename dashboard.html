@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Plans — Cadentra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ---- Dashboard Layout ---- */
+    .dash-root {
+      display: flex;
+      min-height: calc(100vh - var(--nav-h));
+    }
+
+    /* ---- Sidebar ---- */
+    .dash-sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--bg-2);
+      border-right: 1px solid var(--border);
+      padding: 28px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-section-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      padding: 0 20px;
+      margin-bottom: 8px;
+      margin-top: 20px;
+    }
+
+    .sidebar-section-label:first-child { margin-top: 0; }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      border-radius: 0;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+    }
+
+    .sidebar-item:hover { background: var(--bg-3); color: var(--text); }
+
+    .sidebar-item.active {
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+
+    .sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .sidebar-item-icon {
+      width: 16px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .sidebar-item-count {
+      margin-left: auto;
+      font-size: 0.7rem;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1px 7px;
+      color: var(--muted-2);
+    }
+
+    .sidebar-item.active .sidebar-item-count {
+      background: var(--accent-glow);
+      border-color: var(--border-accent);
+      color: var(--accent);
+    }
+
+    .sidebar-add-folder {
+      margin: 8px 20px 0;
+      padding: 9px 14px;
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-family: var(--font-body);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .sidebar-add-folder:hover { border-color: var(--accent); color: var(--accent); }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .sidebar-user-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .sidebar-user-email {
+      font-size: 0.78rem;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .sidebar-signout {
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .sidebar-signout:hover { border-color: #f87171; color: #f87171; }
+
+    /* ---- Main Content ---- */
+    .dash-main {
+      flex: 1;
+      padding: 40px 48px;
+      overflow-y: auto;
+    }
+
+    .dash-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .dash-header-left h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .dash-header-left p {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .dash-new-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity var(--transition);
+      white-space: nowrap;
+    }
+
+    .dash-new-btn:hover { opacity: 0.88; }
+
+    /* ---- Plan Grid ---- */
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .plan-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .plan-card:hover {
+      border-color: var(--border-accent);
+      background: var(--card-bg-hover);
+      transform: translateY(-2px);
+    }
+
+    .plan-card:hover::before { opacity: 1; }
+
+    .plan-card-folder {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid var(--border-accent);
+      border-radius: 20px;
+      padding: 3px 10px;
+      margin-bottom: 14px;
+    }
+
+    .plan-card-name {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+
+    .plan-card-race {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .plan-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.76rem;
+      color: var(--muted-2);
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .plan-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .plan-card-load {
+      flex: 1;
+      padding: 8px 14px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity var(--transition);
+    }
+
+    .plan-card-load:hover { opacity: 0.85; }
+
+    .plan-card-delete {
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .plan-card-delete:hover { border-color: #f87171; color: #f87171; }
+
+    /* ---- Empty State ---- */
+    .dash-empty {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .dash-empty-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .dash-empty h3 {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      margin-bottom: 10px;
+    }
+
+    .dash-empty p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ---- New Folder Modal ---- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      line-height: 1;
+    }
+
+    .modal-close:hover { color: var(--text); }
+
+    .modal-input {
+      width: 100%;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      outline: none;
+      margin-bottom: 16px;
+      transition: border-color var(--transition);
+    }
+
+    .modal-input:focus { border-color: var(--accent); }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-confirm {
+      flex: 1;
+      padding: 11px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: opacity var(--transition);
+    }
+
+    .modal-confirm:hover { opacity: 0.88; }
+    .modal-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .modal-cancel {
+      padding: 11px 18px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .modal-cancel:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    /* ---- Loading ---- */
+    .dash-loading {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .dash-sidebar { display: none; }
+      .dash-main { padding: 28px 20px; }
+      .plan-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="29" cy="5" r="4.5" fill="#4FC3F7"/>
+          <path d="M26 9.5 L18 24" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M24 16 L32 11" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M24 16 L14 21" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M18 24 L9 34" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+          <path d="M9 34 L5 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M18 24 L25 35" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+          <path d="M25 35 L30 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        CADENTRA
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-cta">Get Early Access</button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+    </div>
+    <div class="nav-mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div class="dash-root">
+
+    <!-- Sidebar -->
+    <aside class="dash-sidebar">
+      <div class="sidebar-section-label">Library</div>
+      <button class="sidebar-item active" id="folder-all" data-folder-id="all">
+        <svg class="sidebar-item-icon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3.764a1.5 1.5 0 0 1 1.06.44l.945.945A1.5 1.5 0 0 0 9.329 3H13.5A1.5 1.5 0 0 1 15 4.5v8a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 12.5v-10z"/>
+        </svg>
+        All Plans
+        <span class="sidebar-item-count" id="count-all">0</span>
+      </button>
+
+      <div class="sidebar-section-label" style="margin-top:16px;">Folders</div>
+      <div id="folder-list"></div>
+      <button class="sidebar-add-folder" id="new-folder-btn">+ New Folder</button>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user-row">
+          <div class="sidebar-avatar" id="user-avatar">?</div>
+          <div class="sidebar-user-email" id="user-email">Loading...</div>
+        </div>
+        <button class="sidebar-signout" id="signout-btn">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="dash-main">
+      <div class="dash-header">
+        <div class="dash-header-left">
+          <h1 id="view-title">All Plans</h1>
+          <p id="view-subtitle">Your saved training blocks</p>
+        </div>
+        <a href="how-it-works.html#training-block-builder" class="dash-new-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4v16m8-8H4"/></svg>
+          Generate New Plan
+        </a>
+      </div>
+
+      <div id="dash-loading" class="dash-loading">Loading your plans...</div>
+      <div id="plan-grid" class="plan-grid" style="display:none;"></div>
+      <div id="dash-empty" class="dash-empty" style="display:none;">
+        <div class="dash-empty-icon">
+          <svg width="48" height="48" viewBox="0 0 40 44" fill="none">
+            <circle cx="29" cy="5" r="4.5" fill="rgba(79,195,247,0.3)"/>
+            <path d="M26 9.5 L18 24" stroke="rgba(79,195,247,0.3)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M24 16 L32 11" stroke="rgba(79,195,247,0.3)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M24 16 L14 21" stroke="rgba(79,195,247,0.3)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M18 24 L9 34" stroke="rgba(79,195,247,0.3)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M18 24 L25 35" stroke="rgba(79,195,247,0.3)" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>No plans here yet</h3>
+        <p>Generate a plan with your AI coach and save it to your library.</p>
+        <a href="how-it-works.html#training-block-builder" class="btn btn-primary">Build My Plan</a>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- New Folder Modal -->
+  <div id="folder-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <button class="modal-close" id="folder-modal-close">&#10005;</button>
+      <div class="modal-title">New Folder</div>
+      <input type="text" class="modal-input" id="folder-name-input" placeholder="e.g. Spring Marathon Block" maxlength="60" />
+      <div id="folder-modal-error" style="font-size:0.8rem; color:#f87171; margin-bottom:12px; display:none;"></div>
+      <div class="modal-actions">
+        <button class="modal-confirm" id="folder-modal-confirm">Create Folder</button>
+        <button class="modal-cancel" id="folder-modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="script.js"></script>
+  <script>
+  (function () {
+    if (!window._supabase) {
+      document.getElementById('dash-loading').textContent = 'Supabase is not configured. Fill in js/supabase-client.js with your credentials.';
+      return;
+    }
+
+    var sb            = window._supabase;
+    var currentFolder = 'all'; // 'all' or folder uuid
+    var allPlans      = [];
+    var allFolders    = [];
+
+    // ---- Auth guard ----
+    sb.auth.getUser().then(function (r) {
+      if (!r.data || !r.data.user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      var user = r.data.user;
+      document.getElementById('user-email').textContent = user.email;
+      document.getElementById('user-avatar').textContent = (user.email || '?')[0].toUpperCase();
+      loadAll();
+    });
+
+    // ---- Sign out ----
+    document.getElementById('signout-btn').addEventListener('click', async function () {
+      await sb.auth.signOut();
+      window.location.href = 'login.html';
+    });
+
+    // ---- Load data ----
+    async function loadAll() {
+      var [fRes, pRes] = await Promise.all([
+        sb.from('folders').select('*').order('created_at', { ascending: true }),
+        sb.from('plans').select('*').order('created_at', { ascending: false })
+      ]);
+      allFolders = fRes.data || [];
+      allPlans   = pRes.data || [];
+      renderSidebar();
+      renderPlans();
+      document.getElementById('dash-loading').style.display = 'none';
+      document.getElementById('plan-grid').style.display = '';
+    }
+
+    // ---- Render sidebar folders ----
+    function renderSidebar() {
+      var list = document.getElementById('folder-list');
+      list.innerHTML = '';
+      document.getElementById('count-all').textContent = allPlans.length;
+
+      allFolders.forEach(function (f) {
+        var count = allPlans.filter(function (p) { return p.folder_id === f.id; }).length;
+        var btn = document.createElement('button');
+        btn.className = 'sidebar-item' + (currentFolder === f.id ? ' active' : '');
+        btn.dataset.folderId = f.id;
+        btn.innerHTML =
+          '<svg class="sidebar-item-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h3.764c.398 0 .78.158 1.06.44l.946.945A1.5 1.5 0 0 0 9.329 3.5H13.5A1.5 1.5 0 0 1 15 5v8a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13V5a2 2 0 0 1 .085-.5z"/></svg>' +
+          '<span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + escHtml(f.name) + '</span>' +
+          '<span class="sidebar-item-count">' + count + '</span>';
+        btn.addEventListener('click', function () { selectFolder(f.id, f.name); });
+        list.appendChild(btn);
+      });
+    }
+
+    function selectFolder(id, name) {
+      currentFolder = id;
+      document.getElementById('view-title').textContent = id === 'all' ? 'All Plans' : name;
+      document.getElementById('view-subtitle').textContent = id === 'all' ? 'Your saved training blocks' : 'Plans in this folder';
+      document.querySelectorAll('.sidebar-item').forEach(function (b) { b.classList.remove('active'); });
+      var target = document.querySelector('[data-folder-id="' + id + '"]');
+      if (target) target.classList.add('active');
+      renderPlans();
+    }
+
+    document.getElementById('folder-all').addEventListener('click', function () { selectFolder('all', 'All Plans'); });
+
+    // ---- Render plan cards ----
+    function renderPlans() {
+      var grid  = document.getElementById('plan-grid');
+      var empty = document.getElementById('dash-empty');
+      grid.innerHTML = '';
+
+      var filtered = currentFolder === 'all'
+        ? allPlans
+        : allPlans.filter(function (p) { return p.folder_id === currentFolder; });
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = '';
+        return;
+      }
+
+      grid.style.display = '';
+      empty.style.display = 'none';
+
+      filtered.forEach(function (plan) {
+        var folder = allFolders.find(function (f) { return f.id === plan.folder_id; });
+        var pj = typeof plan.plan_json === 'string' ? JSON.parse(plan.plan_json) : plan.plan_json;
+        var race = (pj && pj.race) ? pj.race : '—';
+        var weeks = (pj && pj.weeks) ? pj.weeks.length : 4;
+        var date = new Date(plan.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+        var card = document.createElement('div');
+        card.className = 'plan-card';
+        card.innerHTML =
+          (folder ? '<div class="plan-card-folder"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor"><path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h3.764c.398 0 .78.158 1.06.44l.946.945A1.5 1.5 0 0 0 9.329 3.5H13.5A1.5 1.5 0 0 1 15 5v8a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13V5a2 2 0 0 1 .085-.5z"/></svg>' + escHtml(folder.name) + '</div>' : '') +
+          '<div class="plan-card-name">' + escHtml(plan.name) + '</div>' +
+          '<div class="plan-card-race">' + escHtml(race) + '</div>' +
+          '<div class="plan-card-meta">' +
+            '<span>' + weeks + ' weeks</span>' +
+            '<span>&middot;</span>' +
+            '<span>' + date + '</span>' +
+          '</div>' +
+          '<div class="plan-card-actions">' +
+            '<button class="plan-card-load" data-id="' + plan.id + '">Load Plan</button>' +
+            '<button class="plan-card-delete" data-id="' + plan.id + '" title="Delete">&#128465;</button>' +
+          '</div>';
+
+        card.querySelector('.plan-card-load').addEventListener('click', function (e) {
+          e.stopPropagation();
+          sessionStorage.setItem('cadentaPlan', JSON.stringify(pj));
+          window.location.href = 'plan.html';
+        });
+
+        card.querySelector('.plan-card-delete').addEventListener('click', function (e) {
+          e.stopPropagation();
+          deletePlan(plan.id);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    async function deletePlan(id) {
+      if (!confirm('Delete this plan? This cannot be undone.')) return;
+      var { error } = await sb.from('plans').delete().eq('id', id);
+      if (!error) {
+        allPlans = allPlans.filter(function (p) { return p.id !== id; });
+        renderSidebar();
+        renderPlans();
+      }
+    }
+
+    // ---- New Folder ----
+    var folderModal     = document.getElementById('folder-modal');
+    var folderNameInput = document.getElementById('folder-name-input');
+    var folderModalErr  = document.getElementById('folder-modal-error');
+    var folderConfirmBtn = document.getElementById('folder-modal-confirm');
+
+    document.getElementById('new-folder-btn').addEventListener('click', function () {
+      folderNameInput.value = '';
+      folderModalErr.style.display = 'none';
+      folderModal.style.display = 'flex';
+      folderNameInput.focus();
+    });
+
+    function closeModal() { folderModal.style.display = 'none'; }
+    document.getElementById('folder-modal-close').addEventListener('click', closeModal);
+    document.getElementById('folder-modal-cancel').addEventListener('click', closeModal);
+    folderModal.addEventListener('click', function (e) { if (e.target === folderModal) closeModal(); });
+
+    folderNameInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') folderConfirmBtn.click();
+    });
+
+    folderConfirmBtn.addEventListener('click', async function () {
+      var name = folderNameInput.value.trim();
+      if (!name) { folderModalErr.textContent = 'Please enter a folder name.'; folderModalErr.style.display = ''; return; }
+      folderConfirmBtn.disabled = true;
+      var { data, error } = await sb.from('folders').insert({ name: name }).select().single();
+      folderConfirmBtn.disabled = false;
+      if (error) { folderModalErr.textContent = error.message; folderModalErr.style.display = ''; return; }
+      allFolders.push(data);
+      renderSidebar();
+      closeModal();
+      selectFolder(data.id, data.name);
+    });
+
+    // ---- Helpers ----
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+  })();
+  </script>
+</body>
+</html>

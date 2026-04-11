@@ -93,18 +93,73 @@
   });
 })();
 
-// ---- Nav CTA buttons → index.html#waitlist ----
+// ---- Nav CTA — auth-aware ----
 (function () {
-  document.querySelectorAll('.nav-cta').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const isHome = location.pathname.endsWith('index.html') || location.pathname.endsWith('/');
+  var cta         = document.querySelector('.nav-cta');
+  var mobileMenu  = document.querySelector('.nav-mobile-menu');
+  if (!cta) return;
+
+  function initNavDefault() {
+    // Fallback: waitlist scroll
+    cta.addEventListener('click', function () {
+      var isHome = location.pathname.endsWith('index.html') || location.pathname.endsWith('/');
       if (isHome) {
-        document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+        var el = document.getElementById('waitlist');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
       } else {
         location.href = 'index.html#waitlist';
       }
     });
-  });
+  }
+
+  if (!window._supabase) { initNavDefault(); return; }
+
+  window._supabase.auth.getUser().then(function (r) {
+    var user = r.data && r.data.user;
+    if (user) {
+      // Replace CTA with Dashboard button
+      cta.textContent = 'Dashboard';
+      cta.onclick = function () { location.href = 'dashboard.html'; };
+
+      // Add sign-out pill next to CTA (desktop)
+      var pill = document.createElement('div');
+      pill.className = 'nav-auth-pill';
+      var av = document.createElement('div');
+      av.className = 'nav-auth-avatar';
+      av.textContent = (user.email || '?')[0].toUpperCase();
+      var so = document.createElement('button');
+      so.className = 'nav-auth-signout';
+      so.textContent = 'Sign Out';
+      so.addEventListener('click', async function () {
+        await window._supabase.auth.signOut();
+        location.reload();
+      });
+      pill.appendChild(av);
+      pill.appendChild(so);
+      cta.parentNode.insertBefore(pill, cta.nextSibling);
+
+      // Mobile menu sign-out link
+      if (mobileMenu) {
+        var dash = document.createElement('a');
+        dash.href = 'dashboard.html';
+        dash.textContent = 'My Plans';
+        mobileMenu.appendChild(dash);
+        var soLink = document.createElement('a');
+        soLink.href = '#';
+        soLink.textContent = 'Sign Out';
+        soLink.addEventListener('click', async function (e) {
+          e.preventDefault();
+          await window._supabase.auth.signOut();
+          location.reload();
+        });
+        mobileMenu.appendChild(soLink);
+      }
+    } else {
+      // Not logged in — CTA goes to login
+      cta.textContent = 'Log In';
+      cta.onclick = function () { location.href = 'login.html'; };
+    }
+  }).catch(function () { initNavDefault(); });
 })();
 
 // ---- Fade-up observer ----
