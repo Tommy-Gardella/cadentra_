@@ -261,6 +261,176 @@
     .no-plan h2 { margin-bottom: 16px; }
     .no-plan p { color: var(--muted); margin-bottom: 32px; }
 
+    /* ---- Alteration Chat ---- */
+    .alter-shell {
+      background: var(--card-bg);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .alter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .alter-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .alter-credits {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      white-space: nowrap;
+    }
+
+    .alter-credits #alter-count {
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .alter-credits.warn #alter-count { color: #FFA726; }
+    .alter-credits.empty #alter-count { color: #ef5350; }
+
+    .alter-messages {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 320px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .alter-messages::-webkit-scrollbar { width: 4px; }
+    .alter-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .alter-intro {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .alter-intro strong { color: var(--text); }
+
+    .alter-msg {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-width: 82%;
+      animation: fadeUp 0.3s ease forwards;
+    }
+
+    .alter-msg-user { align-self: flex-end; }
+    .alter-msg-coach { align-self: flex-start; }
+
+    .alter-msg-sender {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 4px;
+    }
+
+    .alter-msg-user .alter-msg-sender { text-align: right; }
+
+    .alter-msg-bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+    .alter-msg-user .alter-msg-bubble {
+      background: var(--accent);
+      color: #0a0a0a;
+      font-weight: 500;
+      border-radius: 12px 12px 4px 12px;
+    }
+
+    .alter-msg-coach .alter-msg-bubble {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 4px 12px 12px 12px;
+    }
+
+    .alter-typing {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 4px 12px 12px 12px;
+      align-self: flex-start;
+    }
+
+    .alter-typing span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: typing-bounce 1.2s infinite ease-in-out;
+    }
+    .alter-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .alter-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing-bounce {
+      0%,60%,100% { transform:translateY(0); opacity:0.4; }
+      30% { transform:translateY(-5px); opacity:1; }
+    }
+
+    .alter-input-row {
+      display: flex;
+      gap: 10px;
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-3);
+    }
+
+    .alter-input-row input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .alter-input-row input:focus { border-color: var(--accent); }
+    .alter-input-row input::placeholder { color: var(--muted-2); }
+    .alter-input-row input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .alter-exhausted {
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: var(--bg-3);
+    }
+
     /* ---- Print ---- */
     @media print {
       .navbar, .footer, .plan-actions, .legend { display: none !important; }
@@ -374,6 +544,50 @@
 
         <div id="weeks-container"></div>
 
+        <!-- ALTERATION CHAT -->
+        <div class="alter-shell" id="alter-shell" style="display:none; margin-top:56px;">
+          <div class="alter-header">
+            <div class="alter-header-left">
+              <div class="ai-chat-avatar" style="width:36px;height:36px;">
+                <svg width="18" height="20" viewBox="0 0 40 44" fill="none">
+                  <circle cx="29" cy="5" r="4.5" fill="#4FC3F7"/>
+                  <path d="M26 9.5 L18 24" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M24 16 L32 11" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M24 16 L14 21" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M18 24 L9 34" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M9 34 L5 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M18 24 L25 35" stroke="#4FC3F7" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M25 35 L30 40" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <div style="font-size:0.9rem; font-weight:600;">Adjust Your Plan</div>
+                <div style="font-size:0.72rem; color:var(--muted);">Ask your coach to change anything</div>
+              </div>
+            </div>
+            <div class="alter-credits" id="alter-credits">
+              <span id="alter-count">3</span> adjustments remaining
+            </div>
+          </div>
+
+          <div class="alter-messages" id="alter-messages">
+            <div class="alter-intro">
+              <p>Your plan is live above. Want to tweak it? Ask me anything — swap a workout, shift a rest day, change the long run distance, add more speed work. You have <strong>3 adjustments</strong>.</p>
+            </div>
+          </div>
+
+          <div class="alter-input-row" id="alter-input-row">
+            <input type="text" id="alter-input" placeholder="e.g. Move Tuesday's tempo to Thursday..." autocomplete="off" />
+            <button id="alter-send" class="ai-send-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+            </button>
+          </div>
+
+          <div class="alter-exhausted" id="alter-exhausted" style="display:none;">
+            <p>You've used all 3 adjustments. <a href="index.html#waitlist" style="color:var(--accent);">Join the waitlist</a> to get unlimited coaching in the full app.</p>
+          </div>
+        </div>
+
         <!-- CTA -->
         <div style="text-align:center; margin-top:64px; padding:56px 24px; background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius-lg);">
           <span class="section-label">This Is Just a Preview</span>
@@ -450,6 +664,7 @@
     // Show plan sections
     document.getElementById('plan-hero').style.display = '';
     document.getElementById('plan-calendar').style.display = '';
+    document.getElementById('alter-shell').style.display = '';
     document.getElementById('plan-title').textContent = plan.planName || 'Your Training Plan';
     document.getElementById('plan-race').textContent = plan.race || '—';
     document.title = (plan.planName || 'Training Plan') + ' — Cadentra';
@@ -493,6 +708,198 @@
       block.appendChild(grid);
       container.appendChild(block);
     });
+  })();
+  </script>
+  <script>
+  (function () {
+    var MAX_REQUESTS = 3;
+    var requestsLeft = MAX_REQUESTS;
+    var isWaiting = false;
+
+    var alterInput    = document.getElementById('alter-input');
+    var alterSend     = document.getElementById('alter-send');
+    var alterMessages = document.getElementById('alter-messages');
+    var alterCount    = document.getElementById('alter-count');
+    var alterCredits  = document.getElementById('alter-credits');
+    var alterInputRow = document.getElementById('alter-input-row');
+    var alterExhausted = document.getElementById('alter-exhausted');
+
+    if (!alterInput) return; // plan page not loaded with data
+
+    function scrollMsgs() { alterMessages.scrollTop = alterMessages.scrollHeight; }
+
+    function addMsg(role, text) {
+      var wrap = document.createElement('div');
+      wrap.className = 'alter-msg alter-msg-' + role;
+      var sender = document.createElement('div');
+      sender.className = 'alter-msg-sender';
+      sender.textContent = role === 'user' ? 'You' : 'Cadentra Coach';
+      var bubble = document.createElement('div');
+      bubble.className = 'alter-msg-bubble';
+      bubble.textContent = text;
+      wrap.appendChild(sender);
+      wrap.appendChild(bubble);
+      alterMessages.appendChild(wrap);
+      scrollMsgs();
+    }
+
+    function showTyping() {
+      var el = document.createElement('div');
+      el.className = 'alter-typing';
+      el.id = 'alter-typing';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      alterMessages.appendChild(el);
+      scrollMsgs();
+    }
+
+    function removeTyping() {
+      var el = document.getElementById('alter-typing');
+      if (el) el.remove();
+    }
+
+    function updateCounter() {
+      alterCount.textContent = requestsLeft;
+      alterCredits.classList.toggle('warn', requestsLeft === 1);
+      alterCredits.classList.toggle('empty', requestsLeft === 0);
+    }
+
+    function lockInput() {
+      alterInputRow.style.display = 'none';
+      alterExhausted.style.display = 'block';
+    }
+
+    function renderCalendar(plan) {
+      // Save updated plan
+      sessionStorage.setItem('cadentaPlan', JSON.stringify(plan));
+      document.getElementById('plan-title').textContent = plan.planName || 'Your Training Plan';
+      document.getElementById('plan-race').textContent = plan.race || '—';
+
+      var weekLabels = ['Base Building', 'Build Phase', 'Peak Week', 'Recovery Week'];
+      var container = document.getElementById('weeks-container');
+      container.innerHTML = '';
+
+      (plan.weeks || []).forEach(function(week, wi) {
+        var isRecovery = wi === 3;
+        var label = week.label || weekLabels[wi] || ('Week ' + week.week);
+        var totalMiles = week.totalMiles || 0;
+
+        var block = document.createElement('div');
+        block.className = 'calendar-block';
+
+        var header = document.createElement('div');
+        header.className = 'week-header';
+        header.innerHTML =
+          '<span class="week-title">Week ' + (week.week || (wi + 1)) + '</span>' +
+          '<span class="week-label-tag' + (isRecovery ? ' recovery' : '') + '">' + label + '</span>' +
+          (totalMiles ? '<span class="week-miles">~<strong>' + totalMiles + '</strong> miles</span>' : '');
+
+        var grid = document.createElement('div');
+        grid.className = 'week-grid';
+
+        (week.days || []).forEach(function(day) {
+          var type = (day.type || 'easy').toLowerCase();
+          var card = document.createElement('div');
+          card.className = 'day-card ' + type;
+          card.innerHTML =
+            '<div class="day-name">' + (day.day || '') + '</div>' +
+            '<div class="day-workout">' + (day.workout || '') + '</div>' +
+            (day.distance ? '<div class="day-distance">' + day.distance + '</div>' : '') +
+            (day.note ? '<div class="day-note">' + day.note + '</div>' : '');
+          grid.appendChild(card);
+        });
+
+        block.appendChild(header);
+        block.appendChild(grid);
+        container.appendChild(block);
+      });
+
+      // Scroll back up to calendar
+      document.getElementById('plan-calendar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function sendAlteration(userText) {
+      if (isWaiting || requestsLeft <= 0) return;
+      isWaiting = true;
+      alterInput.disabled = true;
+      alterSend.disabled = true;
+
+      requestsLeft--;
+      updateCounter();
+
+      addMsg('user', userText);
+      showTyping();
+
+      // Build context: current plan + user request
+      var currentPlan = sessionStorage.getItem('cadentaPlan');
+      var messages = [
+        {
+          role: 'user',
+          content: 'Here is my current training plan as JSON:\n' + currentPlan +
+            '\n\nPlease make the following adjustment: ' + userText +
+            '\n\nReturn the full updated plan. You MUST include the [CALENDAR_DATA]...[/CALENDAR_DATA] block with the complete updated JSON, outputted FIRST before any text.'
+        }
+      ];
+
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: messages })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        removeTyping();
+        var reply = data.reply || '';
+
+        var calMatch = reply.match(/\[CALENDAR_DATA\]([\s\S]*?)\[\/CALENDAR_DATA\]/);
+        if (calMatch) {
+          try {
+            var updated = JSON.parse(calMatch[1].trim());
+            renderCalendar(updated);
+            var cleanMsg = reply.replace(/\[CALENDAR_DATA\][\s\S]*?\[\/CALENDAR_DATA\]/, '').trim();
+            addMsg('coach', cleanMsg || 'Done! Your plan has been updated above.');
+          } catch(e) {
+            addMsg('coach', 'I updated the plan — scroll up to see the changes.');
+          }
+        } else {
+          addMsg('coach', reply);
+        }
+
+        if (requestsLeft <= 0) {
+          lockInput();
+        } else {
+          alterInput.disabled = false;
+          alterSend.disabled = false;
+          alterInput.focus();
+        }
+        isWaiting = false;
+      })
+      .catch(function() {
+        removeTyping();
+        addMsg('coach', 'Something went wrong. Please try again.');
+        requestsLeft++; // refund on error
+        updateCounter();
+        alterInput.disabled = false;
+        alterSend.disabled = false;
+        isWaiting = false;
+      });
+    }
+
+    alterSend.addEventListener('click', function() {
+      var text = alterInput.value.trim();
+      if (!text || isWaiting) return;
+      alterInput.value = '';
+      sendAlteration(text);
+    });
+
+    alterInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var text = alterInput.value.trim();
+        if (!text || isWaiting) return;
+        alterInput.value = '';
+        sendAlteration(text);
+      }
+    });
+
   })();
   </script>
 </body>
