@@ -530,7 +530,6 @@
         <li><a href="how-it-works.html">How It Works</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
-      <a href="login.html" class="nav-login" id="nav-login-btn">Log In</a>
       <button class="nav-cta">Get Early Access</button>
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     </div>
@@ -884,15 +883,6 @@
     window._supabase.auth.onAuthStateChange(function (event, session) {
       if (session) {
         window.location.href = 'dashboard.html';
-      }
-    });
-    // Also update the nav button for already-logged-in visitors
-    window._supabase.auth.getSession().then(function (r) {
-      var btn = document.getElementById('nav-login-btn');
-      if (!btn) return;
-      if (r.data && r.data.session) {
-        btn.textContent = 'My Plans';
-        btn.href = 'dashboard.html';
       }
     });
   })();

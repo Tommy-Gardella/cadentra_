@@ -305,7 +305,6 @@
         <li><a href="how-it-works.html">How It Works</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
-      <a href="login.html" class="nav-login" id="nav-login-btn">Log In</a>
       <button class="nav-cta">Get Early Access</button>
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     </div>
@@ -501,14 +500,5 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="script.js"></script>
-  <script>
-  (function () {
-    var btn = document.getElementById('nav-login-btn');
-    if (!btn || !window._supabase) return;
-    window._supabase.auth.getUser().then(function (r) {
-      if (r.data && r.data.user) { btn.textContent = 'My Plans'; btn.href = 'dashboard.html'; }
-    });
-  })();
-  </script>
 </body>
 </html>
