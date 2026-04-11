@@ -1206,7 +1206,7 @@
               <div class="day-card rest" data-day="sun">
                 <div class="day-name">Sun</div>
                 <div class="day-type">Rest</div>
-                <div class="day-dist">â€”</div>
+                <div class=”day-dist”>&mdash;</div>
               </div>
 
             </div>
@@ -1238,9 +1238,9 @@
               <div class="progress-item">
                 <div class="progress-header">
                   <span class="progress-label">Weekly Mileage</span>
-                  <span class="progress-val">36 / 36 mi</span>
+                  <span class="progress-val" id="demo-mileage-val">0 / 36 mi</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill" style="width:100%;"></div></div>
+                <div class="progress-track"><div class="progress-fill" id="demo-mileage-bar" style="width:0%;"></div></div>
               </div>
               <div class="progress-item">
                 <div class="progress-header">
@@ -1252,7 +1252,7 @@
               <div class="progress-item">
                 <div class="progress-header">
                   <span class="progress-label">Aerobic Base</span>
-                  <span class="progress-val">Strong â†‘</span>
+                  <span class="progress-val">Strong &#8593;</span>
                 </div>
                 <div class="progress-track"><div class="progress-fill dim" style="width:68%;"></div></div>
               </div>
@@ -1621,6 +1621,24 @@
     var wdClose  = document.getElementById('wd-close');
     if (!detail) return;
 
+    // Mileage per day in week order (cumulative: clicking a day shows miles up to+including that day)
+    var DAY_ORDER = ['mon','tue','wed','thu','fri','sat'];
+    var DAY_MILES = { mon:5, tue:7, wed:4, thu:6, fri:3, sat:11 };
+    var TOTAL_MILES = 36;
+    var mileageVal = document.getElementById('demo-mileage-val');
+    var mileageBar = document.getElementById('demo-mileage-bar');
+
+    function updateMileage(selectedDay) {
+      var cumulative = 0;
+      for (var i = 0; i < DAY_ORDER.length; i++) {
+        var d = DAY_ORDER[i];
+        cumulative += DAY_MILES[d];
+        if (d === selectedDay) break;
+      }
+      if (mileageVal) mileageVal.textContent = cumulative + ' / ' + TOTAL_MILES + ' mi';
+      if (mileageBar) mileageBar.style.width = Math.round((cumulative / TOTAL_MILES) * 100) + '%';
+    }
+
     var currentDay = null;
 
     document.querySelectorAll('.day-card.clickable').forEach(function(card) {
@@ -1630,7 +1648,6 @@
         if (!data) return;
 
         if (currentDay === day) {
-          // Toggle off
           card.classList.remove('selected');
           detail.style.display = 'none';
           currentDay = null;
@@ -1642,7 +1659,10 @@
         card.classList.add('selected');
         currentDay = day;
 
-        // Populate
+        // Update mileage bar
+        updateMileage(day);
+
+        // Populate detail panel
         var dayNames = { mon:'Monday', tue:'Tuesday', wed:'Wednesday', thu:'Thursday', fri:'Friday', sat:'Saturday' };
         wdDay.textContent    = dayNames[day] || day;
         wdName.textContent   = data.name;
@@ -1654,8 +1674,6 @@
         wdStruct.textContent = data.structure;
 
         detail.style.display = 'block';
-
-        // Scroll panel into view smoothly
         detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     });
