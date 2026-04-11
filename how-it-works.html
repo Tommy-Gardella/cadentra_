@@ -437,6 +437,119 @@
 
     .chat-send-btn svg { fill: #0a0a0a; }
 
+
+    /* ---- Clickable day cards ---- */
+    .day-card.clickable {
+      cursor: pointer;
+      position: relative;
+    }
+    .day-card.clickable::after {
+      content: 'tap';
+      position: absolute;
+      bottom: 6px;
+      right: 8px;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+    }
+    .day-card.clickable:hover {
+      border-color: var(--border-accent);
+      background: rgba(79,195,247,0.08);
+      transform: translateY(-2px);
+    }
+    .day-card.clickable.selected {
+      border-color: var(--accent);
+      background: rgba(79,195,247,0.1);
+    }
+    .day-card.clickable.selected::after { content: ''; }
+
+    /* ---- Workout Detail Panel ---- */
+    .workout-detail {
+      background: rgba(79,195,247,0.04);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin: 12px 0 8px;
+      animation: fadeUp 0.25s ease forwards;
+    }
+    .workout-detail-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .workout-detail-title-group { display: flex; flex-direction: column; gap: 2px; }
+    .workout-detail-day {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .workout-detail-name {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+    .workout-detail-close {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .workout-detail-close:hover { border-color: var(--accent); color: var(--accent); }
+    .workout-detail-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .wd-stat {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .wd-stat-label {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .wd-stat strong {
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    .wd-description {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+    .wd-structure {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+    @media (max-width: 600px) {
+      .workout-detail-stats { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 900px) {
       .demo-content {
         grid-template-columns: 1fr;
@@ -1033,9 +1146,9 @@
   <section class="section demo-section">
     <div class="container">
       <div class="demo-header fade-up">
-        <div class="demo-badge">Interactive Demo — Coming in Week 3</div>
+        <div class="demo-badge">Interactive Demo</div>
         <h2>See Cadentra in Action.</h2>
-        <p>A preview of the training dashboard, chat interface, and progress tracking — all in one place.</p>
+        <p>A live preview of the training dashboard â€” click any workout to see full details.</p>
       </div>
 
       <div class="demo-shell fade-up fade-up-delay-1">
@@ -1044,90 +1157,111 @@
           <div class="demo-dot red"></div>
           <div class="demo-dot yellow"></div>
           <div class="demo-dot green"></div>
-          <span class="demo-topbar-title">Cadentra — Training Dashboard &nbsp;·&nbsp; Week 6 of 16 &nbsp;·&nbsp; Half Marathon</span>
+          <span class="demo-topbar-title">Cadentra â€” Training Dashboard &nbsp;Â·&nbsp; Week 6 of 16 &nbsp;Â·&nbsp; Half Marathon</span>
         </div>
 
         <div class="demo-content">
           <!-- Main: Calendar + Progress -->
           <div class="demo-main">
-            <!-- Weekly Plan -->
-            <div class="demo-section-title">This Week's Training</div>
-            <div class="week-grid">
-              <div class="day-card rest">
+            <div class="demo-section-title">This Week's Training â€” click a workout to expand</div>
+
+            <div class="week-grid" id="demo-week-grid">
+
+              <div class="day-card clickable" data-day="mon">
                 <div class="day-name">Mon</div>
-                <div class="day-type">Rest</div>
-                <div class="day-dist">—</div>
+                <div class="day-type">Easy Run</div>
+                <div class="day-dist">5 mi</div>
               </div>
-              <div class="day-card active">
+
+              <div class="day-card clickable active" data-day="tue">
                 <div class="day-name">Tue</div>
                 <div class="day-type">Tempo</div>
-                <div class="day-dist">6 mi</div>
+                <div class="day-dist">7 mi</div>
               </div>
-              <div class="day-card">
+
+              <div class="day-card clickable" data-day="wed">
                 <div class="day-name">Wed</div>
-                <div class="day-type">Easy</div>
+                <div class="day-type">Easy Run</div>
                 <div class="day-dist">4 mi</div>
               </div>
-              <div class="day-card">
+
+              <div class="day-card clickable" data-day="thu">
                 <div class="day-name">Thu</div>
                 <div class="day-type">Intervals</div>
-                <div class="day-dist">5 mi</div>
+                <div class="day-dist">6 mi</div>
               </div>
-              <div class="day-card rest">
+
+              <div class="day-card clickable" data-day="fri">
                 <div class="day-name">Fri</div>
-                <div class="day-type">Rest</div>
-                <div class="day-dist">—</div>
+                <div class="day-type">Recovery</div>
+                <div class="day-dist">3 mi</div>
               </div>
-              <div class="day-card">
+
+              <div class="day-card clickable" data-day="sat">
                 <div class="day-name">Sat</div>
-                <div class="day-type">Easy</div>
-                <div class="day-dist">5 mi</div>
-              </div>
-              <div class="day-card">
-                <div class="day-name">Sun</div>
                 <div class="day-type">Long Run</div>
                 <div class="day-dist">11 mi</div>
+              </div>
+
+              <div class="day-card rest" data-day="sun">
+                <div class="day-name">Sun</div>
+                <div class="day-type">Rest</div>
+                <div class="day-dist">â€”</div>
+              </div>
+
+            </div>
+
+            <!-- Workout Detail Panel -->
+            <div class="workout-detail" id="workout-detail" style="display:none;">
+              <div class="workout-detail-header">
+                <div class="workout-detail-title-group">
+                  <span class="workout-detail-day" id="wd-day"></span>
+                  <h4 class="workout-detail-name" id="wd-name"></h4>
+                </div>
+                <button class="workout-detail-close" id="wd-close">âœ•</button>
+              </div>
+              <div class="workout-detail-body">
+                <div class="workout-detail-stats">
+                  <div class="wd-stat"><span class="wd-stat-label">Distance</span><strong id="wd-dist"></strong></div>
+                  <div class="wd-stat"><span class="wd-stat-label">Pace Zone</span><strong id="wd-pace"></strong></div>
+                  <div class="wd-stat"><span class="wd-stat-label">Est. Duration</span><strong id="wd-duration"></strong></div>
+                  <div class="wd-stat"><span class="wd-stat-label">Effort</span><strong id="wd-effort"></strong></div>
+                </div>
+                <div class="wd-description" id="wd-desc"></div>
+                <div class="wd-structure" id="wd-structure"></div>
               </div>
             </div>
 
             <!-- Progress Bars -->
-            <div class="demo-section-title" style="margin-top: 8px;">Training Progress</div>
+            <div class="demo-section-title" style="margin-top:16px;">Training Progress</div>
             <div class="progress-section">
               <div class="progress-item">
                 <div class="progress-header">
                   <span class="progress-label">Weekly Mileage</span>
-                  <span class="progress-val">31 / 36 mi</span>
+                  <span class="progress-val">36 / 36 mi</span>
                 </div>
-                <div class="progress-track">
-                  <div class="progress-fill" style="width: 86%;"></div>
-                </div>
+                <div class="progress-track"><div class="progress-fill" style="width:100%;"></div></div>
               </div>
               <div class="progress-item">
                 <div class="progress-header">
                   <span class="progress-label">Plan Completion</span>
                   <span class="progress-val">Week 6 / 16</span>
                 </div>
-                <div class="progress-track">
-                  <div class="progress-fill" style="width: 37%;"></div>
-                </div>
+                <div class="progress-track"><div class="progress-fill" style="width:37%;"></div></div>
               </div>
               <div class="progress-item">
                 <div class="progress-header">
                   <span class="progress-label">Aerobic Base</span>
-                  <span class="progress-val">Strong ↑</span>
+                  <span class="progress-val">Strong â†‘</span>
                 </div>
-                <div class="progress-track">
-                  <div class="progress-fill dim" style="width: 68%;"></div>
-                </div>
+                <div class="progress-track"><div class="progress-fill dim" style="width:68%;"></div></div>
               </div>
               <div class="progress-item" style="margin-bottom:0;">
                 <div class="progress-header">
                   <span class="progress-label">Days to Race</span>
                   <span class="progress-val">72 days</span>
                 </div>
-                <div class="progress-track">
-                  <div class="progress-fill dim" style="width: 55%;"></div>
-                </div>
+                <div class="progress-track"><div class="progress-fill dim" style="width:55%;"></div></div>
               </div>
             </div>
           </div>
@@ -1135,17 +1269,16 @@
           <!-- Chat Panel -->
           <div class="demo-chat">
             <div class="chat-header">
-              <div class="chat-avatar">🤖</div>
+              <div class="chat-avatar">ðŸ¤–</div>
               <div>
                 <div class="chat-name">Cadentra Coach</div>
-                <div class="chat-status">● Online</div>
+                <div class="chat-status">â— Online</div>
               </div>
             </div>
-
             <div class="chat-messages">
               <div class="msg msg-coach">
                 <div class="msg-sender">Coach</div>
-                Great tempo run Tuesday — you held 7:42 pace for 4 miles. That's 8 seconds faster than last week.
+                Great tempo run Tuesday â€” you held 7:42 pace for 4 miles. That's 8 seconds faster than last week.
               </div>
               <div class="msg msg-user">
                 <div class="msg-sender">You</div>
@@ -1157,18 +1290,17 @@
               </div>
               <div class="msg msg-user">
                 <div class="msg-sender">You</div>
-                Works for me. What about Sunday's long run?
+                Works for me. What about Saturday's long run?
               </div>
               <div class="msg msg-coach">
                 <div class="msg-sender">Coach</div>
-                Keep it as planned — 11 miles at conversational pace. If the knee is still off, drop to 8 and text me after.
+                Keep it as planned â€” 11 miles at conversational pace. If the knee is still off, drop to 8 and text me after.
               </div>
             </div>
-
             <div class="chat-input-row">
               <div class="chat-input-fake">Ask your coach anything...</div>
               <button class="chat-send-btn" aria-label="Send">
-                <svg width="14" height="14" viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#0a0a0a" d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
               </button>
             </div>
           </div>
@@ -1177,7 +1309,6 @@
 
     </div>
   </section>
-
   <!-- CTA -->
   <section class="section" style="background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(79,195,247,0.07) 0%, transparent 70%);">
     <div class="container text-center">
@@ -1417,6 +1548,127 @@
       }
     });
 
+  })();
+  </script>
+  <script>
+  (function () {
+    var WORKOUTS = {
+      mon: {
+        name: 'Easy Run',
+        dist: '5 miles',
+        pace: 'Easy (conversational)',
+        duration: '~50 min',
+        effort: 'RPE 3-4 / 10',
+        desc: 'Start the week fresh. This run should feel completely comfortable â€” you should be able to hold a full conversation the entire time. Focus on relaxed form and easy breathing.',
+        structure: 'Warm-up: 5 min walk\n5 miles @ easy pace\nCool-down: 5 min walk + stretch'
+      },
+      tue: {
+        name: 'Tempo Run',
+        dist: '7 miles',
+        pace: 'Tempo / Threshold',
+        duration: '~62 min',
+        effort: 'RPE 7 / 10',
+        desc: 'The week\'s key quality session. Tempo pace should feel "comfortably hard" â€” you can speak in short phrases but not hold a conversation. This builds your lactate threshold, the biggest driver of half marathon performance.',
+        structure: '1.5 mi easy warm-up\n4 miles @ tempo pace (half marathon pace minus ~30 sec)\n1.5 mi easy cool-down'
+      },
+      wed: {
+        name: 'Easy Run',
+        dist: '4 miles',
+        pace: 'Easy (recovery)',
+        duration: '~42 min',
+        effort: 'RPE 3 / 10',
+        desc: 'A true recovery run after Tuesday\'s hard effort. The goal is blood flow and active recovery â€” not fitness gains. Slower is better today. If your legs are sore, slow down even more.',
+        structure: '4 miles @ easy/recovery pace\nNo structure â€” just move and shake out the legs'
+      },
+      thu: {
+        name: 'Track Intervals',
+        dist: '6 miles',
+        pace: '5K effort (fast)',
+        duration: '~56 min',
+        effort: 'RPE 8-9 / 10',
+        desc: 'VO2 max work â€” the second key session of the week. These short, hard repeats push your aerobic ceiling higher. The recovery jogs are just as important as the efforts; don\'t skip them.',
+        structure: '1.5 mi easy warm-up\n5 Ã— 1000m @ 5K effort\n   (90 sec jog recovery between each)\n1.5 mi easy cool-down'
+      },
+      fri: {
+        name: 'Recovery Run',
+        dist: '3 miles',
+        pace: 'Very easy',
+        duration: '~32 min',
+        effort: 'RPE 2-3 / 10',
+        desc: 'The easiest run of the week. Two hard sessions in three days means your body needs to recover. Keep the effort very low â€” this run exists to keep blood moving, not to build fitness.',
+        structure: '3 miles @ very easy pace\nOptional: 4-6 strides at the end if legs feel good'
+      },
+      sat: {
+        name: 'Long Run',
+        dist: '11 miles',
+        pace: 'Easy / moderate',
+        duration: '~1 hr 45 min',
+        effort: 'RPE 4-5 / 10',
+        desc: 'The cornerstone of half marathon training. This run builds your aerobic engine, fat-burning capacity, and mental resilience. Stay easy for the first 8 miles, then you can pick it up slightly for the final 3 if feeling strong.',
+        structure: 'Miles 1-8: Easy conversational pace\nMiles 9-10: Moderate effort (optional)\nMile 11: Easy cool-down\nPost-run: stretch + refuel within 30 min'
+      }
+    };
+
+    var detail   = document.getElementById('workout-detail');
+    var wdDay    = document.getElementById('wd-day');
+    var wdName   = document.getElementById('wd-name');
+    var wdDist   = document.getElementById('wd-dist');
+    var wdPace   = document.getElementById('wd-pace');
+    var wdDur    = document.getElementById('wd-duration');
+    var wdEff    = document.getElementById('wd-effort');
+    var wdDesc   = document.getElementById('wd-desc');
+    var wdStruct = document.getElementById('wd-structure');
+    var wdClose  = document.getElementById('wd-close');
+    if (!detail) return;
+
+    var currentDay = null;
+
+    document.querySelectorAll('.day-card.clickable').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var day = card.getAttribute('data-day');
+        var data = WORKOUTS[day];
+        if (!data) return;
+
+        if (currentDay === day) {
+          // Toggle off
+          card.classList.remove('selected');
+          detail.style.display = 'none';
+          currentDay = null;
+          return;
+        }
+
+        // Deselect all
+        document.querySelectorAll('.day-card.clickable').forEach(function(c) { c.classList.remove('selected'); });
+        card.classList.add('selected');
+        currentDay = day;
+
+        // Populate
+        var dayNames = { mon:'Monday', tue:'Tuesday', wed:'Wednesday', thu:'Thursday', fri:'Friday', sat:'Saturday' };
+        wdDay.textContent    = dayNames[day] || day;
+        wdName.textContent   = data.name;
+        wdDist.textContent   = data.dist;
+        wdPace.textContent   = data.pace;
+        wdDur.textContent    = data.duration;
+        wdEff.textContent    = data.effort;
+        wdDesc.textContent   = data.desc;
+        wdStruct.textContent = data.structure;
+
+        detail.style.display = 'block';
+
+        // Scroll panel into view smoothly
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+
+    wdClose.addEventListener('click', function() {
+      detail.style.display = 'none';
+      document.querySelectorAll('.day-card.clickable').forEach(function(c) { c.classList.remove('selected'); });
+      currentDay = null;
+    });
+
+    // Open Tuesday by default
+    var tue = document.querySelector('[data-day="tue"]');
+    if (tue) tue.click();
   })();
   </script></body>
 </html>
