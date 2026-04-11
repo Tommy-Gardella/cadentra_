@@ -879,15 +879,21 @@
   <script>
   (function () {
     if (!window._supabase) return;
-    // If redirected back from email confirmation, session is in the URL hash —
-    // getSession picks it up automatically, then send user to dashboard.
-    window._supabase.auth.getSession().then(function (r) {
-      if (r.data && r.data.session) {
+    // onAuthStateChange fires once the session is established from the URL hash
+    // (e.g. after email confirmation redirect) — send straight to dashboard.
+    window._supabase.auth.onAuthStateChange(function (event, session) {
+      if (session) {
         window.location.href = 'dashboard.html';
-        return;
       }
+    });
+    // Also update the nav button for already-logged-in visitors
+    window._supabase.auth.getSession().then(function (r) {
       var btn = document.getElementById('nav-login-btn');
-      if (btn) { btn.textContent = 'Log In'; btn.href = 'login.html'; }
+      if (!btn) return;
+      if (r.data && r.data.session) {
+        btn.textContent = 'My Plans';
+        btn.href = 'dashboard.html';
+      }
     });
   })();
   </script>
