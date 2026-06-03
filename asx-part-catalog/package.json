@@ -1,9 +1,0 @@
-{
-  "name": "asx-part-catalog",
-  "version": "0.1.0",
-  "description": "Minimal ASX Part Catalog prototype",
-  "private": true,
-  "scripts": {
-    "start": "npx http-server -c-1 . -p 8080"
-  }
-}
