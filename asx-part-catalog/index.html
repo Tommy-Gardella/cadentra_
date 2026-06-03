@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ASX Part Catalog</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <h1>ASX Part Catalog</h1>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <input id="search" type="text" placeholder="Search parts by name, category, or condition…" autocomplete="off" />
+      <div class="toolbar-actions">
+        <select id="category-filter">
+          <option value="">All Categories</option>
+        </select>
+        <button id="btn-add-part" class="btn-primary">+ Add Part</button>
+        <button id="btn-manage-categories" class="btn-secondary">Manage Categories</button>
+      </div>
+    </div>
+
+    <!-- Parts table -->
+    <div class="table-wrap">
+      <table id="parts-table">
+        <thead>
+          <tr>
+            <th class="col-name sortable active" data-col="name">Part Name <span class="sort-arrow">↑</span></th>
+            <th class="col-qty">Quantity</th>
+            <th class="col-cat">Category</th>
+            <th class="col-cond">Condition</th>
+            <th class="col-date sortable" data-col="date">Date Added <span class="sort-arrow"></span></th>
+            <th class="col-actions"></th>
+          </tr>
+        </thead>
+        <tbody id="parts-body"></tbody>
+      </table>
+      <p id="empty-state" class="empty-state hidden">No parts found. Add your first part above.</p>
+    </div>
+
+  </main>
+
+  <!-- ── Add / Edit Part Modal ── -->
+  <div id="modal-part" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-part-title">
+    <div class="modal">
+      <h2 id="modal-part-title">Add Part</h2>
+      <form id="form-part" novalidate>
+        <input type="hidden" id="edit-id" />
+
+        <label for="f-name">Part Name <span class="req">*</span></label>
+        <input id="f-name" type="text" placeholder="e.g. Bearing, 12mm" required />
+
+        <div class="row-2">
+          <div>
+            <label for="f-qty">Quantity <span class="req">*</span></label>
+            <input id="f-qty" type="number" min="1" placeholder="e.g. 5" required />
+          </div>
+          <div>
+            <label for="f-condition">Condition <span class="req">*</span></label>
+            <select id="f-condition" required>
+              <option value="">Select…</option>
+              <option>New</option>
+              <option>Good</option>
+              <option>Fair</option>
+              <option>Poor</option>
+              <option>Damaged</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="f-category">Category</label>
+        <select id="f-category">
+          <option value="">Uncategorised</option>
+        </select>
+
+        <label for="f-description">Description <span class="optional">(optional)</span></label>
+        <textarea id="f-description" rows="3" placeholder="Any notes about this part…"></textarea>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-part">Cancel</button>
+          <button type="submit" class="btn-primary">Save Part</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Manage Categories Modal ── -->
+  <div id="modal-cats" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-cats-title">
+    <div class="modal modal-sm">
+      <h2 id="modal-cats-title">Categories</h2>
+      <div class="add-cat-row">
+        <input id="new-cat-input" type="text" placeholder="New category name…" />
+        <button id="btn-add-cat" class="btn-primary">Add</button>
+      </div>
+      <ul id="cat-list"></ul>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-close-cats">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Part Detail Modal ── -->
+  <div id="modal-detail" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-detail-title">
+    <div class="modal">
+      <h2 id="modal-detail-title"></h2>
+      <div id="detail-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-close-detail">Close</button>
+        <button type="button" class="btn-primary" id="btn-edit-from-detail">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
