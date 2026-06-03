@@ -21,6 +21,10 @@ const searchInput    = $('search');
 const categoryFilter = $('category-filter');
 const partsBody      = $('parts-body');
 const emptyState     = $('empty-state');
+const imageInput     = $('f-image');
+const imagePreviewWrap = $('image-preview-wrap');
+const imagePreview   = $('image-preview');
+let pendingImageData = null;
 
 /* ── Render ── */
 function getFiltered() {
@@ -107,11 +111,44 @@ partsBody.addEventListener('click', e => {
 });
 
 /* ── Part modal ── */
+/* ── Image upload ── */
+imageInput.addEventListener('change', () => {
+  const file = imageInput.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    pendingImageData = e.target.result;
+    imagePreview.src = pendingImageData;
+    imagePreviewWrap.classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+});
+
+$('btn-clear-image').addEventListener('click', () => {
+  pendingImageData = null;
+  imageInput.value = '';
+  imagePreview.src = '';
+  imagePreviewWrap.classList.add('hidden');
+});
+
+function resetImageUI(existingData) {
+  pendingImageData = existingData || null;
+  imageInput.value = '';
+  if (pendingImageData) {
+    imagePreview.src = pendingImageData;
+    imagePreviewWrap.classList.remove('hidden');
+  } else {
+    imagePreview.src = '';
+    imagePreviewWrap.classList.add('hidden');
+  }
+}
+
 $('btn-add-part').addEventListener('click', () => {
   editingId = null;
   $('modal-part-title').textContent = 'Add Part';
   $('form-part').reset();
   $('edit-id').value = '';
+  resetImageUI(null);
   clearErrors();
   $('modal-part').classList.remove('hidden');
   $('f-name').focus();
@@ -128,6 +165,7 @@ function openEdit(id) {
   $('f-condition').value = p.condition;
   $('f-category').value = p.category || '';
   $('f-description').value = p.description || '';
+  resetImageUI(p.image || null);
   clearErrors();
   $('modal-part').classList.remove('hidden');
   $('f-name').focus();
@@ -149,11 +187,13 @@ $('form-part').addEventListener('submit', e => {
   const dateStr   = now.toLocaleDateString('en-AU', { day:'2-digit', month:'short', year:'numeric' });
   const dateRaw   = now.toISOString();
 
+  const image = pendingImageData || (editingId ? (parts.find(x => x.id === editingId) || {}).image : null) || null;
+
   if (editingId) {
     const p = parts.find(x => x.id === editingId);
-    Object.assign(p, { name, qty, condition, category, description: desc });
+    Object.assign(p, { name, qty, condition, category, description: desc, image });
   } else {
-    parts.push({ id: uid(), name, qty, condition, category, description: desc, date: dateStr, dateRaw });
+    parts.push({ id: uid(), name, qty, condition, category, description: desc, image, date: dateStr, dateRaw });
   }
 
   save();
@@ -196,6 +236,15 @@ function openDetail(id) {
   if (!p) return;
   detailId = id;
   $('modal-detail-title').textContent = p.name;
+  const detailImgWrap = $('detail-image-wrap');
+  const detailImg = $('detail-image');
+  if (p.image) {
+    detailImg.src = p.image;
+    detailImgWrap.classList.remove('hidden');
+  } else {
+    detailImg.src = '';
+    detailImgWrap.classList.add('hidden');
+  }
   $('detail-body').innerHTML = `
     <div class="detail-grid">
       <span class="dl">Quantity</span>  <span>${esc(p.qty)}×</span>

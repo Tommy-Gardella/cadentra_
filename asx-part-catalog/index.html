@@ -67,11 +67,10 @@
             <label for="f-condition">Condition <span class="req">*</span></label>
             <select id="f-condition" required>
               <option value="">Select…</option>
-              <option>New</option>
-              <option>Good</option>
-              <option>Fair</option>
               <option>Poor</option>
-              <option>Damaged</option>
+              <option>Fair</option>
+              <option>Good</option>
+              <option>Great</option>
             </select>
           </div>
         </div>
@@ -83,6 +82,15 @@
 
         <label for="f-description">Description <span class="optional">(optional)</span></label>
         <textarea id="f-description" rows="3" placeholder="Any notes about this part…"></textarea>
+
+        <label for="f-image">Image <span class="optional">(optional)</span></label>
+        <div class="image-upload-wrap">
+          <input id="f-image" type="file" accept="image/*" />
+          <div id="image-preview-wrap" class="hidden">
+            <img id="image-preview" src="" alt="Part preview" />
+            <button type="button" id="btn-clear-image" class="btn-icon delete">✕</button>
+          </div>
+        </div>
 
         <div class="modal-footer">
           <button type="button" class="btn-secondary" id="btn-cancel-part">Cancel</button>
@@ -111,6 +119,7 @@
   <div id="modal-detail" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-detail-title">
     <div class="modal">
       <h2 id="modal-detail-title"></h2>
+      <div id="detail-image-wrap" class="hidden"><img id="detail-image" src="" alt="" /></div>
       <div id="detail-body"></div>
       <div class="modal-footer">
         <button type="button" class="btn-secondary" id="btn-close-detail">Close</button>
